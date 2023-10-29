@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="tbodyDiv">
+        <table class="table table-bordered  text-center contenedorFilas table-hover text-dark">
+            <!-- ACA ESTA EL PROBLEM -->
+            <thead class="sticky-top table-light hv50">
+                <tr>
+                    <th>Obra Social</th>
+                    <!-- <th>Pais</th> -->
+                </tr>
+            </thead>
+            <tbody class="table-dark">
+                <tr *ngFor="let obra of obrasociales; let idx=index;"
+                    [ngClass]="rowClicked == idx ? 'table-active' : ''" (click)="onClickRow(obra.nombre,idx)">
+                    <td>{{obra.nombre}}</td>
+                </tr>
+                <!-- <tr *ngFor="let obra of obrasociales" (click)="onClickRow(obra.nombre)">
+                    <td>{{obra.nombre}}</td>
+                </tr> -->
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
