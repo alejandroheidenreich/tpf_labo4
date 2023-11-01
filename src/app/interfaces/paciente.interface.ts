@@ -7,4 +7,5 @@ export interface Paciente {
     email: string;
     img1: string;
     img2: string;
+    idDoc: string;
 }

@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { ActivateEspecialistaService } from 'src/app/services/activate-especialista.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { CurrentUserService } from 'src/app/services/current-user.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -19,7 +21,7 @@ export class LoginComponent {
     clave: [""]
   });
 
-  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder, private actEsp: ActivateEspecialistaService) { }
+  constructor(private cUser: CurrentUserService, private auth: AuthService, private router: Router, private fb: FormBuilder, private actEsp: ActivateEspecialistaService, private userService: UsuarioService) { }
 
   onSubmit() {
 
@@ -32,35 +34,60 @@ export class LoginComponent {
     this.auth.login(this.user)
       .then(res => {
         console.log(res);
-
         if (res) {
-          if (res.user!.emailVerified) {
-            this.actEsp.traerPorEmail(res.user!.email!)
-              .subscribe(esp => {
+          this.cUser.currentUser.email = this.user.email;
+          this.cUser.currentUser.clave = this.user.clave;
+          //console.log(res.user!.email!);
+          this.userService.esAdmin(res.user!.email!)
+            .subscribe(admin => {
+              if (admin) {
+                // console.log(res.user!.email!);
+                console.log("Admin log");
 
-                console.log(esp);
+                this.router.navigateByUrl('/usuarios');
+              } else {
+                if (res.user!.emailVerified) {
+                  this.actEsp.traerPorEmail(res.user!.email!)
+                    .subscribe(esp => {
+                      console.log(esp);
+                      if (!esp || esp.active) {
+                        this.userService.esPaciente(res.user!.email!).subscribe(paciente => {
+                          if (paciente) {
 
-                if (!esp || esp.active) {
-                  this.router.navigateByUrl('');
+                            console.log("Paciente log");
+                            this.router.navigateByUrl('/paciente');
+                          }
+                        });
+                        this.userService.esEspecialista(res.user!.email!).subscribe(especialista => {
+                          if (especialista) {
+
+                            console.log("Especialista log");
+                            this.router.navigateByUrl('/especialista');
+                          }
+                        });
+                        //this.router.navigateByUrl('');
+                      }
+                      else {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Cuenta no esta activada',
+                          footer: 'Para verificar su cuenta comuniquese con administracion'
+                        });
+                      }
+                    });
                 }
                 else {
                   Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Cuenta no esta activada',
-                    footer: 'Para verificar su cuenta comuniquese con administracion'
+                    text: 'Cuenta no verificada',
+                    footer: 'Verificar cuenta antes de loguearse'
                   });
                 }
-              });
-          }
-          else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: 'Cuenta no verificada',
-              footer: 'Verificar cuenta antes de loguearse'
+              }
             });
-          }
+
         } else {
           Swal.fire({
             icon: 'error',
@@ -71,5 +98,18 @@ export class LoginComponent {
           console.log("error log");
         }
       });
+  }
+
+  loadAdmin() {
+    this.form.controls['email'].setValue('admin@admin.com');
+    this.form.controls['clave'].setValue('admin1');
+  }
+  loadPaciente() {
+    this.form.controls['email'].setValue('xilapi5763@jybra.com');
+    this.form.controls['clave'].setValue('paciente');
+  }
+  loadEspecialista() {
+    this.form.controls['email'].setValue('lexol26062@hondabbs.com');
+    this.form.controls['clave'].setValue('especialista');
   }
 }

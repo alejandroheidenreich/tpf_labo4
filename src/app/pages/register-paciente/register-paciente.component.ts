@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Paciente } from 'src/app/interfaces/paciente.interface';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { ImagenService } from 'src/app/services/imagen.service';
 import { PacientesService } from 'src/app/services/pacientes.service';
 import Swal from 'sweetalert2';
 
@@ -15,20 +16,31 @@ import Swal from 'sweetalert2';
 export class RegisterPacienteComponent {
   private paciente: Paciente | undefined;
   private user!: Usuario;
+  private file1: any;
+  private file2: any;
+
+  private test = {
+    nombre: 'Ricardo',
+    apellido: 'Arjona',
+    dni: 12647821,
+    email: 'yeroti1736@qianhost.com',
+    edad: 60
+
+  }
   public form: FormGroup = this.fb.group({
     nombre: ['', [Validators.required]],
     apellido: ['', [Validators.required]],
-    edad: ['', [Validators.required, Validators.min(18), Validators.max(65)]],
+    edad: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
     dni: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
     obra: ['', [Validators.required]],
-    email: ['', [Validators.email]],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    imagen1: [''],
-    imagen2: [''],
+    imagen1: ['', [Validators.required]],
+    imagen2: ['', [Validators.required]],
     terminos: [false, [Validators.requiredTrue]],
   });
 
-  constructor(private fb: FormBuilder, private pacienteService: PacientesService, private auth: AuthService, private router: Router) { }
+  constructor(private fb: FormBuilder, private pacienteService: PacientesService, private auth: AuthService, private router: Router, private imagenService: ImagenService) { }
 
   ngOnInit(): void {
     this.form.reset();
@@ -78,7 +90,8 @@ export class RegisterPacienteComponent {
         obraSocial: obra,
         email: email,
         img1: imagen1,
-        img2: imagen2
+        img2: imagen2,
+        idDoc: ''
       } as Paciente;
 
     this.user =
@@ -87,29 +100,89 @@ export class RegisterPacienteComponent {
         clave: password,
       } as Usuario;
 
-    this.auth.verficarNuevoUsuario(this.user.email)
-      .then(verify => {
-        if (!verify) {
-          this.auth.register(this.user);
-          this.pacienteService.agregarPaciente(this.paciente!);
-          this.form.reset();
-          this.router.navigate(['/login']);
-        }
-        else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Error al crear cuenta',
-            footer: 'El email ya esta registrado'
-          });
-        }
-      });
+
+    this.auth.register(this.user).then(res => {
+      if (res == null) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error al crear cuenta',
+          footer: "El email ya fue registrado"
+        });
+      } else {
+        this.registrarPaciente();
+      }
+    });
+  }
+
+  async registrarPaciente() {
+    const path1 = await this.imagenService.subirImg(this.file1);
+    this.paciente!.img1 = path1;
+    const path2 = await this.imagenService.subirImg(this.file2);
+    this.paciente!.img2 = path2;
+    const res = await this.pacienteService.agregarPaciente(this.paciente!)
+    console.log(res);
+    this.form.reset();
+
+    Swal.fire({
+      position: 'bottom-end',
+      icon: 'success',
+      title: 'Usuario registrado',
+      footer: "Recuerde verificar su email",
+      showConfirmButton: false,
+      timer: 1500
+    }).then(() => {
+      this.auth.logout();
+      this.router.navigate(['/login'])
+    });
 
 
   }
+
+
+  // registrarPaciente() {
+  //   this.imagenService.subirImg(this.file1)
+  //     .then(path => {
+  //       this.paciente!.img1 = path;
+  //       this.imagenService.subirImg(this.file2)
+  //         .then(path2 => {
+  //           this.paciente!.img2 = path2;
+  //           this.pacienteService.agregarPaciente(this.paciente!)
+  //             .then(x => {
+  //               if (x) {
+  //                 this.form.reset();
+  //                 //this.auth.logout();
+  //                 Swal.fire({
+  //                   position: 'bottom-end',
+  //                   icon: 'success',
+  //                   title: 'Usuario registrado',
+  //                   footer: "Recuerde verificar su email",
+  //                   showConfirmButton: false,
+  //                   timer: 1500
+  //                 }).then(() => this.router.navigate(['/login']));
+
+  //               } else {
+  //                 Swal.fire({
+  //                   icon: 'error',
+  //                   title: 'Oops...',
+  //                   text: 'Error al crear cuenta',
+  //                   footer: "Ocurrio un problema"
+  //                 });
+  //               }
+  //             });
+  //         });
+  //     });
+  // }
 
   getObra(obra: string) {
     this.form.controls['obra'].setValue(obra);
   }
 
+  uploadImageUno(foto: any) {
+    this.file1 = foto.target.files[0];
+  }
+
+  uploadImageDos(foto: any) {
+    this.file2 = foto.target.files[0];
+  }
 }

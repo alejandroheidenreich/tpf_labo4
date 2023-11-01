@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 //import { EspecialidadService } from 'src/app/services/especialidad.service';
 //import { Especialidad } from 'src/app/interfaces/especialidad.interface';
@@ -8,12 +8,20 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css']
 })
-export class WelcomeComponent {
+export class WelcomeComponent implements OnInit {
 
   constructor(private auth: AuthService/*, private es: EspecialidadService*/) { }
 
+  ngOnInit(): void {
+    this.logout();
+  }
+
   logout() {
     this.auth.logout();
+  }
+
+  getUser() {
+    this.auth.getUserLogged().subscribe(x => console.log(x));
     // const lista = [
     //   'Alergología',
     //   'Anestesiología',
@@ -75,7 +83,11 @@ export class WelcomeComponent {
     //   'Radiología',]
 
     // lista.forEach(x => {
-    //   this.es.agregarEspecialidad({ nombre: x } as Especialidad);
+    //   this.es.agregarEspecialidad({ nombre: this.quitarAcentos(x) } as Especialidad);
     // })
   }
+
+  // quitarAcentos(texto: string): string {
+  //   return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  // }
 }

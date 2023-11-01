@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Especialista } from 'src/app/interfaces/especialista.interface';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { EspecialistaService } from 'src/app/services/especialista.service';
+import { ImagenService } from 'src/app/services/imagen.service';
 import Swal from 'sweetalert2';
 
 
@@ -17,20 +18,24 @@ export class RegisterEspecialistaComponent {
 
   private especialista: Especialista | undefined;
   private user!: Usuario;
-
+  private file: any;
   public form: FormGroup = this.fb.group({
     nombre: ['', [Validators.required]],
     apellido: ['', [Validators.required]],
     edad: ['', [Validators.required, Validators.min(18), Validators.max(65)]],
     dni: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]],
-    especialidad: ['', [Validators.required]],
-    email: ['', [Validators.email]],
+    especialidad: this.fb.array([], [Validators.required]),
+    email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    img: [''],
+    img: ['', [Validators.required]],
     terminos: [false, [Validators.requiredTrue]],
   });
 
-  constructor(private fb: FormBuilder, private especialistaService: EspecialistaService, private auth: AuthService, private router: Router) { }
+  constructor(private fb: FormBuilder, private especialistaService: EspecialistaService, private auth: AuthService, private router: Router, private imagenService: ImagenService) { }
+
+  get especialidad() {
+    return this.form.get('especialidad') as FormArray;
+  }
 
   ngOnInit(): void {
     this.form.reset();
@@ -82,7 +87,8 @@ export class RegisterEspecialistaComponent {
         especialidad: especialidad,
         email: email,
         img: img,
-        active: false
+        active: false,
+        idDoc: ''
       } as Especialista;
 
     this.user =
@@ -91,28 +97,70 @@ export class RegisterEspecialistaComponent {
         clave: password,
       } as Usuario;
 
-    this.auth.verficarNuevoUsuario(this.user.email)
-      .then(verify => {
-        if (!verify) {
-          this.auth.register(this.user);
-          this.especialistaService.agregarEspecialista(this.especialista!);
-          this.form.reset();
-          this.router.navigate(['/login']);
-        }
-        else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Error al crear cuenta',
-            footer: 'El email ya esta registrado'
+
+    this.auth.register(this.user).then(res => {
+      if (res == null) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error al crear cuenta',
+          footer: "El email ya fue registrado"
+        });
+      } else {
+        this.imagenService.subirImg(this.file)
+          .then(path => {
+            this.especialista!.img = path;
+            this.especialistaService.agregarEspecialista(this.especialista!)
+              .then(() => {
+
+                this.form.reset();
+                this.auth.logout();
+                Swal.fire({
+                  position: 'bottom-end',
+                  icon: 'success',
+                  title: 'Usuario registrado',
+                  footer: "Recuerde verificar su email",
+                  showConfirmButton: false,
+                  timer: 1500
+                }).then(() => this.router.navigate(['/login']));
+
+              });;
           });
-        }
-      });
+      }
+    });
+
 
   }
 
   getEspecialidad(especialidad: string) {
-    this.form.controls['especialidad'].setValue(especialidad);
-    console.log(especialidad);
+    const existe = this.elementoExisteEnFormArray(especialidad)
+    if (existe === false) {
+      this.especialidad.push(this.fb.control(especialidad, [Validators.required]));
+      //console.log("Se agrego", especialidad);
+
+    }
+    else {
+      this.especialidad.removeAt(existe);
+      //console.log("Se removio", especialidad);
+    }
+  }
+
+  elementoExisteEnFormArray(valor: string) {
+    const formArray = this.form.get('especialidad') as FormArray;
+
+    for (let i = 0; i < formArray.length; i++) {
+      if (formArray.at(i).value === valor) {
+        return i;
+      }
+    }
+    return false;
+  }
+
+
+  uploadImage(foto: any) {
+    this.file = foto.target.files[0];
+    //console.log(this.file);
   }
 }
+
+

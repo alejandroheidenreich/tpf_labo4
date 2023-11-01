@@ -1,4 +1,4 @@
-<div class="container py-4">
+<div class="container">
     <main>
 
         <div class="py-3 text-center">
@@ -10,10 +10,12 @@
                 Propia (true o false))..</p> -->
         </div>
 
+        <button class="btn btn btn-sm btn-outline-secondary mb-3" routerLink="">Volver</button>
+
         <div class="row g-5 justify-content-between">
 
             <div class="col-md-6 col-lg-7 h-100 p-5 text-white bg-dark rounded-3">
-                <h4 class="mb-3">Datos del Especialista</h4>
+                <!-- <h4 class="mb-3">Datos del Especialista</h4> -->
                 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
                     <div class="row g-3">
                         <div class="col-sm-6">
@@ -81,7 +83,8 @@
                         <!-- <h4 class="mb-3">Imagenes</h4> -->
                         <div class="col-8">
                             <label for="img" class="form-label">Foto de perfil</label>
-                            <input type="file" class="form-control" id="img" formControlName="img">
+                            <input type="file" class="form-control" id="img" formControlName="img"
+                                (change)="uploadImage($event)">
                             <span *ngIf="isValidField('img')" class="form-text text-danger">
                                 {{getFieldError('img')}}
                             </span>
@@ -91,12 +94,12 @@
                     <hr class="my-4">
 
                     <div class="col-md-12">
-                        <div class="form-check">
+                        <div class="form-check mb-1">
                             <input type="checkbox" class="form-check-input" id="terminos" formControlName="terminos">
                             <label class="form-check-label" for="terminos">Acepto terminos y condiciones</label>
-                            <br>
+
                             <span *ngIf="isValidField('terminos')" class="form-text text-danger">
-                                {{getFieldError('terminos')}}
+                                &nbsp;&nbsp; Debe aceptar los terminos y condiciones.
                             </span>
                         </div>
                     </div>
@@ -104,9 +107,10 @@
                 </form>
             </div>
             <div class="col-md-3 col-lg-4 h-100 p-5 text-center text-white bg-dark rounded-3">
-                <h4 class="mb-3">Seleccione una Especialidad</h4>
+                <h4 class="mb-3">Seleccione Especialidades</h4>
                 <span *ngIf="isValidField('especialidad')" class="form-text text-danger">
-                    {{getFieldError('especialidad')}}
+                    <!-- {{getFieldError('especialidad')}} -->
+                    Debe tener por lo menos una especialidad.
                 </span>
                 <app-tabla-especialidad (especial)="getEspecialidad($event)"></app-tabla-especialidad>
             </div>

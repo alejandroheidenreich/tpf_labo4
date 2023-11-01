@@ -1,19 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Firestore, addDoc, collection, onSnapshot, query } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 import { Paciente } from '../interfaces/paciente.interface';
+import { Observable } from 'rxjs';
+import { ImagenService } from './imagen.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PacientesService {
 
-  constructor(private firestore: Firestore) { }
+  private dataRef = collection(this.firestore, 'pacientes');
 
-  agregarPaciente(nuevoPaciente: Paciente): void {
-    if (nuevoPaciente === null) return;
-    const col = collection(this.firestore, 'pacientes');
-    addDoc(col, nuevoPaciente);
+  constructor(private firestore: Firestore, private imgService: ImagenService) { }
+
+  agregarPaciente(nuevoPaciente: Paciente): Promise<any> {
+    if (nuevoPaciente === null) return Promise.reject();
+    ;
+    const docs = doc(this.dataRef);
+    nuevoPaciente.idDoc = docs.id;
+    return setDoc(docs, nuevoPaciente);
+    //return addDoc(col, nuevoPaciente);
   }
+
 
   obtenerPacientes(listaPacientes: Paciente[]) {
     const q = query(collection(this.firestore, 'pacientes'));
@@ -26,5 +34,18 @@ export class PacientesService {
       });
     });
     return unsubscribe;
+  }
+
+  traer(): Observable<Paciente[]> {
+    return new Observable<Paciente[]>((observer) => {
+      onSnapshot(collection(this.firestore, 'pacientes'), (snap) => {
+        const especialistas: Paciente[] = [];
+        snap.docChanges().forEach(x => {
+          const one = x.doc.data() as Paciente;
+          especialistas.push(one);
+        });
+        observer.next(especialistas);
+      });
+    });
   }
 }

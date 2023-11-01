@@ -3,8 +3,9 @@ export interface Especialista {
     apellido: string;
     edad: number;
     dni: number;
-    especialidad: string;
+    especialidad: string[];
     email: string;
     img: string;
     active: boolean;
+    idDoc: string;
 }

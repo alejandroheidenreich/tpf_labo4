@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, addDoc, collection, onSnapshot, query } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, onSnapshot, query, setDoc, updateDoc } from '@angular/fire/firestore';
 import { Especialista } from '../interfaces/especialista.interface';
 import { Observable } from 'rxjs';
 
@@ -12,10 +12,17 @@ export class EspecialistaService {
 
   constructor(private firestore: Firestore) { }
 
-  agregarEspecialista(nuevoEspecialista: Especialista): void {
-    if (nuevoEspecialista === null) return;
-    const col = collection(this.firestore, 'especialistas');
-    addDoc(col, nuevoEspecialista);
+  agregarEspecialista(nuevoEspecialista: Especialista): Promise<any> {
+    if (nuevoEspecialista === null) return Promise.reject();
+    const docs = doc(this.dataRef);
+    nuevoEspecialista.idDoc = docs.id;
+    return setDoc(docs, nuevoEspecialista);
+  }
+
+  updateEspecialista(especialista: Especialista): void {
+    if (especialista === null) return;
+    const docs = doc(this.dataRef, especialista.idDoc);
+    updateDoc(docs, { active: especialista.active });
   }
 
   traer(): Observable<Especialista[]> {
@@ -32,7 +39,7 @@ export class EspecialistaService {
   }
 
   obtenerEspecialista(listaEspecialistas: Especialista[]) {
-    const q = query(collection(this.firestore, 'especialistas'));
+    const q = query(this.dataRef);
     const unsubscribe = onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
@@ -43,5 +50,7 @@ export class EspecialistaService {
     });
     return unsubscribe;
   }
+
+
 
 }

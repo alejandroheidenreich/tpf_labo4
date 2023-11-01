@@ -1,0 +1,53 @@
+<!-- <div class="area"></div> -->
+
+
+<div class="sidebar">
+    <nav class="main-menu ">
+        <ul>
+            <li>
+                <a (click)="elegir('usuarios')">
+                    <img src="assets/logo.svg" alt="">
+
+                    <span class="nav-text">
+                        Volver
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a (click)="elegir('paciente')">
+                    <i class="fa fa-user fa-2x"></i>
+                    <span class="nav-text">
+                        Pacientes
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a (click)="elegir('especialista')">
+                    <i class="fa fa-user-md fa-2x"></i>
+                    <span class="nav-text">
+                        Especialistas
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a (click)="elegir('admin')">
+                    <i class="fa fa-key fa-2x"></i>
+                    <span class="nav-text">
+                        Admins
+                    </span>
+                </a>
+            </li>
+
+        </ul>
+        <ul class="logout">
+            <li>
+                <a (click)="logout()">
+                    <i class="fa fa-power-off fa-2x"></i>
+                    <span class="nav-text">
+                        Logout
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
