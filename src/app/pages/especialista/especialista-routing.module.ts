@@ -5,6 +5,10 @@ import { EspecialistaComponent } from './especialista.component';
 const routes: Routes = [
   {
     path: '', component: EspecialistaComponent
+  },
+  {
+    path: 'mis-turnos', loadChildren: () => import('./mis-turnos/mis-turnos.module')
+      .then((mod) => mod.MisTurnosModule),
   }
 ];
 

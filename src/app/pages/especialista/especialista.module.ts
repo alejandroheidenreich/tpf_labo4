@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { EspecialistaRoutingModule } from './especialista-routing.module';
 import { EspecialistaComponent } from './especialista.component';
+import { NavbarModule } from 'src/app/modules/navbar/navbar.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { EspecialistaComponent } from './especialista.component';
   ],
   imports: [
     CommonModule,
-    EspecialistaRoutingModule
+    EspecialistaRoutingModule,
+    NavbarModule
   ]
 })
 export class EspecialistaModule { }

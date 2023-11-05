@@ -1,2 +1,12 @@
-<p>paciente works!</p>
-<button class="btn btn-primary " (click)="logout()">LOG OUT</button>
+<div>
+    <app-navbar [rol]="'paciente'"></app-navbar>
+</div>
+
+<div>
+    <router-outlet></router-outlet>
+</div>
+
+
+<!-- <button class="btn btn-primary" (click)="logout()">LOG OUT</button>
+
+<button class="btn btn-secondary" routerLink="mis-turnos">MIS TURNOS</button> -->

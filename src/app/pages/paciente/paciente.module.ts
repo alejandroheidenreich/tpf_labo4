@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { PacienteRoutingModule } from './paciente-routing.module';
 import { PacienteComponent } from './paciente.component';
+import { NavbarModule } from 'src/app/modules/navbar/navbar.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { PacienteComponent } from './paciente.component';
   ],
   imports: [
     CommonModule,
-    PacienteRoutingModule
+    PacienteRoutingModule,
+    NavbarModule
   ]
 })
 export class PacienteModule { }

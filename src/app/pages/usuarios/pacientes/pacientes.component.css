@@ -2,3 +2,21 @@
     width: 100px;
     height: 100px;
   } */
+
+ 
+ /* .container-fluid .card{
+    z-index: -2;
+  } */
+
+
+.card{
+  z-index: -1;
+}
+
+  
+
+  @media (max-width: 767px) { 
+    main{
+      margin-left: 20%;
+    }
+  }

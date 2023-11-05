@@ -14,7 +14,6 @@ export class AuthService {
   constructor(private afauth: AngularFireAuth, private firestore: Firestore, private router: Router) { }
 
   async login(user: Usuario) {
-    // this.afauth.
     try {
       return await this.afauth.signInWithEmailAndPassword(user.email, user.clave);
     } catch (error) {

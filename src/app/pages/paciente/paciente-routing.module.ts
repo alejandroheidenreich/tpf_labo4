@@ -4,8 +4,16 @@ import { PacienteComponent } from './paciente.component';
 
 const routes: Routes = [
   {
-    path: '', component: PacienteComponent
-  }
+    path: '', component: PacienteComponent,
+    children: [
+      {
+        path: 'mis-turnos',
+        loadChildren: () => import('./mis-turnos/mis-turnos.module')
+          .then((mod) => mod.MisTurnosModule),
+      }
+    ]
+  },
+
 ];
 
 @NgModule({
