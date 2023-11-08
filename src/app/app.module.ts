@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { NavbarComponent } from './modules/navbar/navbar.component';
 import { environment } from 'src/environments/environment.development';
 import { AngularFireModule } from '@angular/fire/compat';
 import { HttpClientModule } from '@angular/common/http';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { NgxSpinnerModule } from "ngx-spinner";
+
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     NgbModule,
     HttpClientModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
@@ -27,6 +29,8 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     AngularFireModule.initializeApp(environment.firebase),
+    NgxSpinnerModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],
   providers: [],
   bootstrap: [AppComponent]

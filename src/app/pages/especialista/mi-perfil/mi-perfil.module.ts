@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { MiPerfilRoutingModule } from './mi-perfil-routing.module';
 import { MiPerfilComponent } from './mi-perfil.component';
+import { HorariosComponent } from 'src/app/components/horarios/horarios.component';
 
 
 @NgModule({
   declarations: [
-    MiPerfilComponent
+    MiPerfilComponent, HorariosComponent
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { PacientesService } from './pacientes.service';
 import { EspecialistaService } from './especialista.service';
 import { Especialista } from '../interfaces/especialista.interface';
+import { Paciente } from '../interfaces/paciente.interface';
+import { Admin } from '../interfaces/admin.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,35 +14,35 @@ export class UsuarioService {
 
   constructor(private adminService: AdminService, private pacienteService: PacientesService, private especialsitaService: EspecialistaService) { }
 
-  esAdmin(email: string): Observable<boolean> {
+  esAdmin(email: string): Observable<Admin | null> {
 
-    return new Observable<boolean>((observer) => {
+    return new Observable<Admin | null>((observer) => {
 
       this.adminService.traer().subscribe(admins => {
         admins.forEach(admin => {
           if (admin.email === email) {
-            observer.next(true);
+            observer.next(admin);
             observer.complete();
           }
         });
-        observer.next(false);
+        observer.next(null);
         observer.complete();
       })
     });
   }
 
-  esPaciente(email: string): Observable<boolean> {
+  esPaciente(email: string): Observable<Paciente | null> {
 
-    return new Observable<boolean>((observer) => {
+    return new Observable<Paciente | null>((observer) => {
 
       this.pacienteService.traer().subscribe(pacientes => {
         pacientes.forEach(paciente => {
           if (paciente.email === email) {
-            observer.next(true);
+            observer.next(paciente);
             observer.complete();
           }
         });
-        observer.next(false);
+        observer.next(null);
         observer.complete();
       })
     });
@@ -62,4 +64,5 @@ export class UsuarioService {
       })
     });
   }
+
 }

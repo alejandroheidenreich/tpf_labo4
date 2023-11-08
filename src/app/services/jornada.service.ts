@@ -1,0 +1,311 @@
+import { Injectable } from '@angular/core';
+import { Cronograma, Jornada, JornadaDiaView } from '../interfaces/jornada.interface';
+import { Firestore, addDoc, collection, doc, onSnapshot, setDoc, updateDoc } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class JornadaService {
+
+  public jornada!: Jornada;
+
+  private espJorRef = collection(this.firestore, 'jornada-especialista');
+  private jorRef = collection(this.firestore, 'jornada');
+  constructor(private firestore: Firestore) { }
+
+
+  agregarJornada(nuevaJornada: Jornada): void {
+    if (nuevaJornada === null) return;
+    const docs = doc(this.espJorRef);
+    nuevaJornada.id = docs.id;
+    setDoc(docs, nuevaJornada)
+  }
+
+  traerJornada(email: string): Observable<Jornada> {
+    return new Observable<Jornada>((observer) => {
+      onSnapshot(this.espJorRef, (snap) => {
+        let jornada!: Jornada;
+        snap.docChanges().forEach(x => {
+          const data = x.doc.data() as Jornada;
+          if (data.email === email) {
+            jornada = data;
+            return;
+          }
+        });
+        observer.next(jornada);
+      });
+    });
+  }
+
+
+
+  generarJornadaInicial() {
+
+    // es por consultorio
+    const horarios = [
+      {
+        hora: '08:00',
+        disponible: true,
+
+      },
+      {
+        hora: '08:30',
+        disponible: true,
+
+      },
+      {
+        hora: '09:00',
+        disponible: true,
+
+      },
+      {
+        hora: '09:30',
+        disponible: true,
+
+      },
+      {
+        hora: '10:00',
+        disponible: true,
+
+      },
+      {
+        hora: '10:30',
+        disponible: true,
+
+      },
+      {
+        hora: '11:00',
+        disponible: true,
+
+      },
+      {
+        hora: '11:30',
+        disponible: true,
+
+      },
+      {
+        hora: '12:00',
+        disponible: true,
+
+      },
+      {
+        hora: '12:30',
+        disponible: true,
+
+      },
+      {
+        hora: '13:00',
+        disponible: true,
+
+      },
+      {
+        hora: '13:30',
+        disponible: true,
+
+      },
+      {
+        hora: '14:00',
+        disponible: true,
+
+      },
+      {
+        hora: '14:30',
+        disponible: true,
+
+      },
+      {
+        hora: '15:00',
+        disponible: true,
+
+      },
+      {
+        hora: '15:30',
+        disponible: true,
+
+      },
+      {
+        hora: '16:00',
+        disponible: true,
+
+      },
+      {
+        hora: '16:30',
+        disponible: true,
+
+      },
+      {
+        hora: '17:00',
+        disponible: true,
+
+      },
+      {
+        hora: '17:30',
+        disponible: true,
+
+      },
+      {
+        hora: '18:00',
+        disponible: true,
+
+      },
+      {
+        hora: '18:30',
+        disponible: true,
+
+      },
+
+    ];
+
+    const horariosSabado = [
+      {
+        hora: '08:00',
+        disponible: true,
+
+      },
+      {
+        hora: '08:30',
+        disponible: true,
+
+      },
+      {
+        hora: '09:00',
+        disponible: true,
+
+      },
+      {
+        hora: '09:30',
+        disponible: true,
+
+      },
+      {
+        hora: '10:00',
+        disponible: true,
+
+      },
+      {
+        hora: '10:30',
+        disponible: true,
+
+      },
+      {
+        hora: '11:00',
+        disponible: true,
+
+      },
+      {
+        hora: '11:30',
+        disponible: true,
+
+      },
+      {
+        hora: '12:00',
+        disponible: true,
+
+      },
+      {
+        hora: '12:30',
+        disponible: true,
+
+      },
+      {
+        hora: '13:00',
+        disponible: true,
+
+      },
+      {
+        hora: '13:30',
+        disponible: true,
+
+      },
+
+    ];
+
+    const dias = {
+      lunes: horarios,
+      martes: horarios,
+      miercoles: horarios,
+      jueves: horarios,
+      viernes: horarios,
+      sabado: horariosSabado,
+    }
+
+
+    const jornada = {
+      consultorio1: dias,
+      consultorio2: dias,
+      consultorio3: dias,
+      consultorio4: dias,
+      consultorio5: dias,
+      consultorio6: dias,
+    }
+
+
+
+    const col = collection(this.firestore, 'jornada');
+    addDoc(col, jornada);
+  }
+
+
+  traerCronograma(): Observable<Cronograma> {
+    return new Observable<Cronograma>((observer) => {
+      onSnapshot(this.jorRef, (snap) => {
+        snap.docChanges().forEach(x => {
+          const crono = x.doc.data();
+          observer.next(crono);
+        });
+      });
+    });
+  }
+
+
+
+  getHorario(crono: Cronograma, dia: string) {
+    const horarios = {} as JornadaDiaView;
+    for (const consultorio in crono) {
+      horarios[consultorio] = crono[consultorio][dia]
+    }
+    return horarios;
+  }
+
+  updateCronograma(nuevoCrono: Cronograma): void {
+    if (nuevoCrono === null) return;
+    const docs = doc(this.jorRef, 'i4JYWqIosI5lNiXo9JQB');
+    updateDoc(docs, nuevoCrono);
+  }
+
+  actualizarCronograma(cronograma: Cronograma, nuevosDatos: Cronograma): Cronograma {
+    const cronogramaNuevo: Cronograma = { ...cronograma };
+
+    for (const consultorio in nuevosDatos) {
+      if (nuevosDatos.hasOwnProperty(consultorio)) {
+        if (!cronogramaNuevo[consultorio]) {
+          cronogramaNuevo[consultorio] = {};
+        }
+
+        const diasCronograma = nuevosDatos[consultorio];
+        for (const dia in diasCronograma) {
+          if (diasCronograma.hasOwnProperty(dia)) {
+            const horariosCronograma = diasCronograma[dia];
+            if (!cronogramaNuevo[consultorio][dia]) {
+              cronogramaNuevo[consultorio][dia] = [];
+            }
+
+            for (const horarioNuevo of horariosCronograma) {
+              const indice = cronogramaNuevo[consultorio][dia].findIndex((horarioExistente) => horarioExistente.hora === horarioNuevo.hora);
+
+              if (indice !== -1) {
+                cronogramaNuevo[consultorio][dia][indice].disponible = horarioNuevo.disponible;
+              } else {
+                cronogramaNuevo[consultorio][dia].push({ hora: horarioNuevo.hora, disponible: horarioNuevo.disponible });
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return cronogramaNuevo;
+  }
+
+}

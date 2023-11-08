@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Especialista } from 'src/app/interfaces/especialista.interface';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { AuthService } from 'src/app/services/auth.service';
@@ -31,7 +32,7 @@ export class RegisterEspecialistaComponent {
     terminos: [false, [Validators.requiredTrue]],
   });
 
-  constructor(private fb: FormBuilder, private especialistaService: EspecialistaService, private auth: AuthService, private router: Router, private imagenService: ImagenService) { }
+  constructor(private spinner: NgxSpinnerService, private fb: FormBuilder, private especialistaService: EspecialistaService, private auth: AuthService, private router: Router, private imagenService: ImagenService) { }
 
   get especialidad() {
     return this.form.get('especialidad') as FormArray;
@@ -115,14 +116,21 @@ export class RegisterEspecialistaComponent {
 
                 this.form.reset();
                 this.auth.logout();
-                Swal.fire({
-                  position: 'bottom-end',
-                  icon: 'success',
-                  title: 'Usuario registrado',
-                  footer: "Recuerde verificar su email",
-                  showConfirmButton: false,
-                  timer: 1500
-                }).then(() => this.router.navigate(['/login']));
+                this.spinner.show();
+
+                setTimeout(() => {
+                  /** spinner ends after 5 seconds */
+                  this.spinner.hide();
+                  Swal.fire({
+                    position: 'bottom-end',
+                    icon: 'success',
+                    title: 'Usuario registrado',
+                    footer: "Recuerde verificar su email",
+                    showConfirmButton: false,
+                    timer: 1500
+                  }).then(() => this.router.navigate(['/login']));
+                }, 1000);
+
 
               });;
           });

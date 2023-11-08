@@ -12,8 +12,13 @@ export const checkPacienteGuard: CanActivateFn = (route, state) => {
     auth.getUserLogged().subscribe(res => {
       if (res) {
         userService.esPaciente(res.email!).subscribe((ans) => {
-          observer.next(ans);
-          observer.complete();
+          if (ans) {
+            observer.next(true);
+            observer.complete();
+          } else {
+            observer.next(false);
+            observer.complete();
+          }
         });
       } else {
         observer.next(false);

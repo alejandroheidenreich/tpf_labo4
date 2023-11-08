@@ -43,7 +43,7 @@ export class LoginComponent {
               if (admin) {
                 // console.log(res.user!.email!);
                 console.log("Admin log");
-
+                this.cUser.admin = admin;
                 this.router.navigateByUrl('/usuarios');
               } else {
                 if (res.user!.emailVerified) {
@@ -53,14 +53,14 @@ export class LoginComponent {
                       if (!esp || esp.active) {
                         this.userService.esPaciente(res.user!.email!).subscribe(paciente => {
                           if (paciente) {
-
+                            this.cUser.paciente = paciente;
                             console.log("Paciente log");
                             this.router.navigateByUrl('/paciente');
                           }
                         });
                         this.userService.esEspecialista(res.user!.email!).subscribe(especialista => {
                           if (especialista) {
-
+                            this.cUser.especialista = especialista;
                             console.log("Especialista log");
                             this.router.navigateByUrl('/especialista');
                           }

@@ -1,5 +1,6 @@
-<app-navbar (rol)="'especialista'"></app-navbar>
-
-<button class="btn btn-primary " (click)="logout()">LOG OUT</button>
-
-<button class="btn btn-secondary" routerLink="mis-turnos">MIS TURNOS</button>
+<div>
+    <app-navbar [rol]="'especialista'"></app-navbar>
+</div>
+<div>
+    <router-outlet></router-outlet>
+</div>

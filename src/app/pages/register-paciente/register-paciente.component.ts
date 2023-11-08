@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Paciente } from 'src/app/interfaces/paciente.interface';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { AuthService } from 'src/app/services/auth.service';
@@ -40,7 +41,7 @@ export class RegisterPacienteComponent {
     terminos: [false, [Validators.requiredTrue]],
   });
 
-  constructor(private fb: FormBuilder, private pacienteService: PacientesService, private auth: AuthService, private router: Router, private imagenService: ImagenService) { }
+  constructor(private spinner: NgxSpinnerService, private fb: FormBuilder, private pacienteService: PacientesService, private auth: AuthService, private router: Router, private imagenService: ImagenService) { }
 
   ngOnInit(): void {
     this.form.reset();
@@ -116,6 +117,7 @@ export class RegisterPacienteComponent {
   }
 
   async registrarPaciente() {
+    this.spinner.show();
     const path1 = await this.imagenService.subirImg(this.file1);
     this.paciente!.img1 = path1;
     const path2 = await this.imagenService.subirImg(this.file2);
@@ -124,17 +126,22 @@ export class RegisterPacienteComponent {
     console.log(res);
     this.form.reset();
 
-    Swal.fire({
-      position: 'bottom-end',
-      icon: 'success',
-      title: 'Usuario registrado',
-      footer: "Recuerde verificar su email",
-      showConfirmButton: false,
-      timer: 1500
-    }).then(() => {
-      this.auth.logout();
-      this.router.navigate(['/login'])
-    });
+
+    setTimeout(() => {
+      Swal.fire({
+        position: 'bottom-end',
+        icon: 'success',
+        title: 'Usuario registrado',
+        footer: "Recuerde verificar su email",
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
+        this.auth.logout();
+        this.router.navigate(['/login'])
+      });
+      this.spinner.hide();
+    }, 1000);
+
 
 
   }
