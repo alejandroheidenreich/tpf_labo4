@@ -143,7 +143,6 @@ export class RegisterPacienteComponent {
     }, 1000);
 
 
-
   }
 
 

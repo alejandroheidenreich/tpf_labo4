@@ -6,7 +6,7 @@
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon btn-outline-light">Menu</span>
+            <span class="navbar-toggler-icon btn-outline-light pt-1">◉</span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
@@ -32,6 +32,10 @@
                 <li class="nav-item">
                     <a class="nav-link active text-light" aria-current="page" (click)="goTo('/paciente/mis-turnos')">Mis
                         Turnos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active text-light" aria-current="page"
+                        (click)="goTo('/paciente/solicitar-turno')">Solicitar Turno</a>
                 </li>
             </ul>
         </div>

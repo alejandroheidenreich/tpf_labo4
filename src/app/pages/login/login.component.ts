@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { ActivateEspecialistaService } from 'src/app/services/activate-especialista.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,10 +22,11 @@ export class LoginComponent {
     clave: [""]
   });
 
-  constructor(private cUser: CurrentUserService, private auth: AuthService, private router: Router, private fb: FormBuilder, private actEsp: ActivateEspecialistaService, private userService: UsuarioService) { }
+  constructor(private spinner: NgxSpinnerService, private cUser: CurrentUserService, private auth: AuthService, private router: Router, private fb: FormBuilder, private actEsp: ActivateEspecialistaService, private userService: UsuarioService) { }
 
   onSubmit() {
 
+    this.spinner.show();
     this.user =
     {
       email: this.form.controls['email'].value,
@@ -37,14 +39,15 @@ export class LoginComponent {
         if (res) {
           this.cUser.currentUser.email = this.user.email;
           this.cUser.currentUser.clave = this.user.clave;
-          //console.log(res.user!.email!);
           this.userService.esAdmin(res.user!.email!)
             .subscribe(admin => {
               if (admin) {
-                // console.log(res.user!.email!);
-                console.log("Admin log");
-                this.cUser.admin = admin;
-                this.router.navigateByUrl('/usuarios');
+                setTimeout(() => {
+                  this.spinner.hide();
+                  console.log("Admin log");
+                  this.cUser.admin = admin;
+                  this.router.navigateByUrl('/usuarios');
+                }, 1000);
               } else {
                 if (res.user!.emailVerified) {
                   this.actEsp.traerPorEmail(res.user!.email!)
@@ -53,49 +56,63 @@ export class LoginComponent {
                       if (!esp || esp.active) {
                         this.userService.esPaciente(res.user!.email!).subscribe(paciente => {
                           if (paciente) {
-                            this.cUser.paciente = paciente;
-                            console.log("Paciente log");
-                            this.router.navigateByUrl('/paciente');
+                            setTimeout(() => {
+                              this.spinner.hide();
+                              this.cUser.paciente = paciente;
+                              console.log("Paciente log");
+                              this.router.navigateByUrl('/paciente');
+                            }, 1000);
                           }
                         });
                         this.userService.esEspecialista(res.user!.email!).subscribe(especialista => {
                           if (especialista) {
-                            this.cUser.especialista = especialista;
-                            console.log("Especialista log");
-                            this.router.navigateByUrl('/especialista');
+                            setTimeout(() => {
+                              this.spinner.hide();
+                              this.cUser.especialista = especialista;
+                              console.log("Especialista log");
+                              this.router.navigateByUrl('/especialista');
+                            }, 1000);
                           }
                         });
-                        //this.router.navigateByUrl('');
                       }
                       else {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'Oops...',
-                          text: 'Cuenta no esta activada',
-                          footer: 'Para verificar su cuenta comuniquese con administracion'
-                        });
+                        setTimeout(() => {
+                          this.spinner.hide();
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Cuenta no esta activada',
+                            footer: 'Para verificar su cuenta comuniquese con administracion'
+                          });
+                        }, 1000);
                       }
                     });
                 }
                 else {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Cuenta no verificada',
-                    footer: 'Verificar cuenta antes de loguearse'
-                  });
+                  setTimeout(() => {
+                    this.spinner.hide();
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: 'Cuenta no verificada',
+                      footer: 'Verificar cuenta antes de loguearse'
+                    });
+                  }, 1000);
                 }
               }
             });
 
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Usuario/contraseña incorrectos',
-            footer: 'Vuelva a intentarlo'
-          })
-          console.log("error log");
+          setTimeout(() => {
+            this.spinner.hide();
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Usuario/contraseña incorrectos',
+              footer: 'Vuelva a intentarlo'
+            })
+            console.log("error log");
+          }, 1000);
         }
       });
   }

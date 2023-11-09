@@ -38,6 +38,21 @@ export class JornadaService {
     });
   }
 
+  traerJornadas(): Observable<Jornada[]> {
+    return new Observable<Jornada[]>((observer) => {
+      onSnapshot(this.espJorRef, (snap) => {
+        let jornada: Jornada[] = [];
+        snap.docChanges().forEach(x => {
+
+
+          const data = x.doc.data() as Jornada;
+          console.log("SOY DATA", data);
+          jornada.push(data);
+        });
+        observer.next(jornada);
+      });
+    });
+  }
 
 
   generarJornadaInicial() {

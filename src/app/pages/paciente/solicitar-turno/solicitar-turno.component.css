@@ -1,0 +1,11 @@
+:host ::ng-deep .p-datepicker {
+    margin-top: 10rem;
+    margin-left: 1rem;
+    transform: scale(1.5);
+  }
+
+ 
+  /* :host ::ng-deep .p-datepicker-title {
+
+    
+  } */

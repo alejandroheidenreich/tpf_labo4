@@ -10,7 +10,12 @@ const routes: Routes = [
         path: 'mis-turnos',
         loadChildren: () => import('./mis-turnos/mis-turnos.module')
           .then((mod) => mod.MisTurnosModule),
-      }
+      },
+      {
+        path: 'solicitar-turno',
+        loadChildren: () => import('./solicitar-turno/solicitar-turno.module')
+          .then((mod) => mod.SolicitarTurnoModule),
+      },
     ]
   },
 
