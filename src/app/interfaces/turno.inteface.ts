@@ -9,7 +9,8 @@ export interface Turno {
     especialidad: string,
     estado: string,
     id: string,
-    // reseña: string,
+    reseña: string,
+    calificacion: string,
     // encuesta: string,
 }
 

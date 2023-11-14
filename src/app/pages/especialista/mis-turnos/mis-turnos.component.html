@@ -2,40 +2,41 @@
     <h1>Mis Turnos</h1>
     <hr>
     <div class="row" *ngIf="turnos.length > 0">
-        <div class="col-4 bg-dark text-light rounded-3 text-left border border-3 border-secondary mb-2"
+        <div class="col-12 col-lg-3 col-xl-3 bg-dark text-light rounded-3 text-left border border-3 border-secondary mb-2"
             *ngFor="let turno of turnos">
             <h3>Paciente: {{getPaciente(turno.pacienteEmail)}}</h3>
             <h4>Fecha: {{turno.fecha}}</h4>
             <h4>Hora: {{turno.horario.hora}}</h4>
             <h4>Nro. Consultorio: {{turno.horario.nroConsultorio}}</h4>
-            <h4>Estado: {{turno.estado}}</h4>
+            <h4 class="text-capitalize">Estado: {{turno.estado}}</h4>
             <hr>
             <div class="row">
-                <div class="col-3 mb-3" *ngIf="turno.estado == 'aceptado'" (click)="cancelar(turno)">
+                <div class="col-3 mb-3 mx-2" *ngIf="turno.estado == 'aceptado'" (click)="cancelar(turno)">
                     <button class="btn btn-outline-danger">Cancelar</button>
                 </div>
-                <div class="col-3 mb-3" *ngIf="turno.estado == 'pendiente'">
-                    <button class="btn btn-outline-success">Aceptar</button>
+                <div class="col-3 mb-3 mx-2" *ngIf="turno.estado == 'pendiente'">
+                    <button class="btn btn-outline-success" (click)="aceptar(turno)">Aceptar</button>
                 </div>
-                <div class="col-3 mb-3" *ngIf="turno.estado == 'pendiente'">
-                    <button class="btn btn-outline-danger">Rechazar</button>
+                <div class="col-3 mb-3 mx-2" *ngIf="turno.estado == 'pendiente'">
+                    <button class="btn btn-outline-danger" (click)="rechazar(turno)">Rechazar</button>
                 </div>
-                <div class="col-3 mb-3" *ngIf="turno.estado == 'aceptado'">
-                    <button class="btn btn-outline-warning">Finalizar</button>
+                <div class="col-3 mb-3 mx-2" *ngIf="turno.estado == 'aceptado'">
+                    <button class="btn btn-outline-warning" (click)="finalizar(turno)">Finalizar</button>
                 </div>
-                <div class="col-4 mb-3" *ngIf="turno.estado == 'finalizado'">
-                    <button class="btn btn-outline-info">Ver Reseña</button>
+                <div class="col-3 mb-3 mx-2" *ngIf="turno.estado == 'finalizado' && turno.calificacion != ''">
+                    <button class="btn btn-outline-info" (click)="verCalificacion(turno)">Ver Reseña</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<!-- <button class="btn btn-primary" (click)="test()">TEST</button> -->
+
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Launch demo modal
 </button>
 
-<!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -52,4 +53,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

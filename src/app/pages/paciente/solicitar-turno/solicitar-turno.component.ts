@@ -178,7 +178,9 @@ export class SolicitarTurnoComponent implements OnInit {
       especialistaEmail: turno.especialistaEmail,
       especialidad: esp,
       estado: 'pendiente',
-      id: ''
+      id: '',
+      reseña: '',
+      calificacion:'',
     }
 
     this.tur.agregarTurno(this.turno);
