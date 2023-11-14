@@ -45,6 +45,23 @@ export class SolicitarTurnoComponent implements OnInit {
     });
   }
 
+
+  test(algo: any) {
+    console.log("ALGO: ", algo);
+
+  }
+
+  getEspecialista(email: string): string {
+
+    let nombre = '';
+    for (const esp of this.especialistas) {
+      if (esp.email === email) {
+        nombre = `${esp.nombre} ${esp.apellido}`;
+        break;
+      }
+    }
+    return nombre;
+  }
   cargarTurnos(): void {
     this.horarios = [];
     this.turnosDisponibles = [];
@@ -81,10 +98,7 @@ export class SolicitarTurnoComponent implements OnInit {
         dia: dia
       };
       this.turnosDisponibles.push(this.fechas);
-
     }
-    console.log(this.turnosDisponibles);
-
   }
 
   reset() {
@@ -142,11 +156,7 @@ export class SolicitarTurnoComponent implements OnInit {
   }
   existeHorarioEnTurnos(horario: Horario, fecha: string): boolean {
     for (const turno of this.turnosActuales) {
-
       if (turno.horario.hora === horario.hora && turno.horario.nroConsultorio === horario.nroConsultorio && fecha === turno.fecha) {
-        console.log("HORARIOS IGUALES");
-        console.log(turno.horario.hora, '===',
-          horario.hora, '&&', turno.horario.nroConsultorio, '===', horario.nroConsultorio, '&&', fecha, '===', turno.fecha);
         return false;
       }
     }
