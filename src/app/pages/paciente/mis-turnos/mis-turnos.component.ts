@@ -20,7 +20,7 @@ export class MisTurnosComponent implements OnInit {
     private auth: AuthService,
     private tur: TurnoService,
     private esp: EspecialistaService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.auth.getUserLogged().subscribe((user) => {
@@ -54,6 +54,7 @@ export class MisTurnosComponent implements OnInit {
       }
     });
   }
+
   verResenia(turno: Turno) {
     if (turno.reseña) {
       Swal.fire(turno.reseña);

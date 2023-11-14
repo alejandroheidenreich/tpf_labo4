@@ -68,6 +68,9 @@ export class RegisterEspecialistaComponent {
     }
     return null;
   }
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+  }
 
   onSubmit(): void {
     if (this.form.invalid) {
