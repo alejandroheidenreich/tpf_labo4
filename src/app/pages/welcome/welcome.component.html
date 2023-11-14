@@ -18,7 +18,7 @@
         </header>
 
         <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
+            <div class="container-fluid">
                 <h1 class="display-5 fw-bold">Clinica Online</h1>
                 <p class="col-md-8 fs-4">En Clínica Online, estamos comprometidos con tu salud y bienestar.
                     Desde el momento en que cruzas nuestras puertas, te damos la bienvenida a un espacio dedicado a
@@ -27,30 +27,24 @@
             </div>
         </div>
 
-        <div class="row align-items-md-stretch">
-            <div class="col-md-6">
-                <div class="h-100 p-5 text-white bg-dark rounded-3">
-                    <h2>Pacientes</h2>
-                    <p>En Clínica Online, tu salud es nuestra prioridad número uno. Nos enorgullece ofrecer a
-                        nuestros pacientes la más alta calidad en atención médica y un equipo de profesionales
-                        comprometidos con tu bienestar.</p>
-                    <button class="btn btn-outline-light" type="button"
-                        routerLink="register-paciente">Atenderse</button>
+        <div class="row justify-content-around">
+            <div class="col-md-4 py-4">
+                <div class="bg-dark circular-div" routerLink="register-paciente">
+                    <img src="assets/pacientes.png" alt="pacientes" class="circular-image">
+                    <h2 class="centered-text">Pacientes</h2>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="h-100 p-5 bg-light border rounded-3">
-                    <h2>Especialistas</h2>
-                    <p> Nuestros médicos y especialistas cuentan con años de experiencia en sus respectivos campos.
-                        Están dedicados a mantenerte saludable y proporcionar el mejor tratamiento posible.</p>
-                    <button class="btn btn-outline-secondary" type="button"
-                        routerLink="register-especialista">Trabajar</button>
+            <div class="col-md-4 py-4">
+                <div class="bg-light circular-div" routerLink="register-especialista">
+                    <img src="assets/especialistas.png" alt="pacientes" class="circular-image">
+                    <h2 class="centered-text">Especialistas</h2>
+
                 </div>
             </div>
         </div>
 
         <footer class="pt-3 mt-4 text-muted border-top">
-            &copy; 2023 - LAB IV
+            <span (click)="accion()">&copy; 2023 - LAB IV</span>
 
         </footer>
     </div>

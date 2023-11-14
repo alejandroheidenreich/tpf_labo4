@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Horario, Jornada } from 'src/app/interfaces/jornada.interface';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Especialidad } from 'src/app/interfaces/especialidad.interface';
+import { Especialista } from 'src/app/interfaces/especialista.interface';
+import { Dias, Horario, Jornada } from 'src/app/interfaces/jornada.interface';
+import { HorarioAtencion, Turno } from 'src/app/interfaces/turno.inteface';
+import { AuthService } from 'src/app/services/auth.service';
+import { EspecialidadService } from 'src/app/services/especialidad.service';
+import { EspecialistaService } from 'src/app/services/especialista.service';
 import { JornadaService } from 'src/app/services/jornada.service';
+import { TurnoService } from 'src/app/services/turno.service';
 
 
 @Component({
@@ -9,50 +17,186 @@ import { JornadaService } from 'src/app/services/jornada.service';
   styleUrls: ['./solicitar-turno.component.css']
 })
 export class SolicitarTurnoComponent implements OnInit {
-  public minDate!: Date;
-  public maxDate!: Date;
-  public date!: Date;
   public jornadas!: Jornada[];
+  public fechas!: any;
+  public turnosDisponibles: any[] | null = null;
+  public turno!: Turno;
   public horarios: Horario[] = [];
+  public pacienteEmail!: string;
+  public turnosActuales!: Turno[];
+  public especialistas: Especialista[] = [];
+  public especialidades: Especialidad[] = [];
+  public filtroSelect: string = "";
+  public especialidadSelect: string = "";
+  public especialistaSelect: Especialista | null = null;
 
-  constructor(public jor: JornadaService) { }
+
+  constructor(private spinner: NgxSpinnerService, private jor: JornadaService, private tur: TurnoService, private auth: AuthService, private esp: EspecialistaService, private especial: EspecialidadService) { }
 
   ngOnInit(): void {
-    this.minDate = new Date(Date.now());
-    this.maxDate = new Date(this.minDate);
-    this.maxDate.setDate(this.minDate.getDate() + 14);
-    this.date = this.minDate;
+    this.auth.getUserLogged().subscribe(user => this.pacienteEmail = user?.email!);
+    this.esp.traer().subscribe(data => this.especialistas = data);
+    this.especial.traer().subscribe(data => this.especialidades = data);
     this.jor.traerJornadas().subscribe(res => {
       this.jornadas = res
-      this.cargarTurnos();
+      this.tur.traerTurnos().subscribe(data => {
+        this.turnosActuales = data
+      });
     });
   }
 
-  test() {
-    //console.log(this.date);
-    this.cargarTurnos();
+  cargarTurnos(): void {
+    this.horarios = [];
+    this.turnosDisponibles = [];
+    let cargo = false;
+    let fecha = new Date(Date.now());
+    fecha.setDate(fecha.getDate() + 1);
+
+    for (let index = 0; index < 15; index++) {
+      let unDia: HorarioAtencion[] = [];
+      if (index != 0)
+        fecha.setDate(fecha.getDate() + 1);
+
+      const dia = this.convertirDiaATexto(fecha.getDay());
+      for (const jornada of this.jornadas) {
+        if ((this.filtroSelect === 'especialista' && jornada.email === this.especialistaSelect?.email) ||
+          (this.filtroSelect === 'especialidad' && this.contieneEspecialidad(jornada, this.especialidadSelect))) {
+
+          if (dia !== 'domingo' && jornada.dias[dia].length > 0) {
+            for (const horarioJor of jornada.dias[dia]) {
+              const disp = this.existeHorarioEnTurnos(horarioJor, fecha.toLocaleDateString());
+              const horarioAtencion: HorarioAtencion = {
+                horario: horarioJor,
+                especialistaEmail: jornada.email,
+                disponible: disp
+              };
+              unDia.push(horarioAtencion);
+            }
+          }
+        }
+
+      }
+      this.fechas = {
+        [`${fecha.toLocaleDateString()}`]: unDia,
+        dia: dia
+      };
+      this.turnosDisponibles.push(this.fechas);
+
+    }
+    console.log(this.turnosDisponibles);
+
   }
 
-  cargarTurnos() {
+  reset() {
+    this.filtroSelect = "";
+    this.especialistaSelect = null;
+    this.especialidadSelect = "";
+    this.turnosDisponibles = null;
+  }
 
-    if (this.date != null) {
-      this.horarios = [];
-      const dia = this.convertirDiaATexto(this.date.getDay());
+  setFiltro(selector: string): void {
+    this.spinner.show();
+    setTimeout(() => {
+      this.filtroSelect = selector;
+      this.spinner.hide();
+    }, 1000);
+  }
 
-      for (const jornada of this.jornadas) {
-        if (jornada.dias[dia].length > 0) {
-          this.horarios = this.horarios.concat(jornada.dias[dia]);
+  setEspecialista(esp: Especialista): void {
+    this.spinner.show();
+    setTimeout(() => {
+      this.especialistaSelect = esp;
+      console.log(this.especialistaSelect);
+      this.cargarTurnos();
+      this.spinner.hide();
+    }, 1000);
+
+  }
+
+  setEspecialidad(esp: string): void {
+    this.spinner.show();
+
+    setTimeout(() => {
+      this.especialidadSelect = esp;
+      console.log(this.especialidadSelect);
+
+      this.cargarTurnos();
+      this.spinner.hide();
+    }, 1000);
+
+  }
+
+
+
+  contieneEspecialidad(jornada: Jornada, esp: string): boolean {
+    for (const especialista of this.especialistas) {
+      if (especialista.email === jornada.email) {
+        if (especialista.especialidad.includes(esp)) {
+          return true;
         }
+        break;
       }
     }
+    return false;
 
+  }
+  existeHorarioEnTurnos(horario: Horario, fecha: string): boolean {
+    for (const turno of this.turnosActuales) {
+
+      if (turno.horario.hora === horario.hora && turno.horario.nroConsultorio === horario.nroConsultorio && fecha === turno.fecha) {
+        console.log("HORARIOS IGUALES");
+        console.log(turno.horario.hora, '===',
+          horario.hora, '&&', turno.horario.nroConsultorio, '===', horario.nroConsultorio, '&&', fecha, '===', turno.fecha);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  generarTurno(fecha: string, turno: HorarioAtencion): void {
+
+    let esp = this.especialidadSelect;
+
+    if (this.especialidadSelect === "") {
+      esp = this.especialistaSelect?.especialidad[0]!;
+    }
+
+    this.turno = {
+      horario: turno.horario,
+      fecha: fecha,
+      pacienteEmail: this.pacienteEmail,
+      especialistaEmail: turno.especialistaEmail,
+      especialidad: esp,
+      estado: 'pendiente',
+      id: ''
+    }
+
+    this.tur.agregarTurno(this.turno);
+    this.reset();
   }
 
   convertirDiaATexto(dia: number): string {
     const semana = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
-
     return semana[dia];
   }
+
+  getKeyByIndex(array: any[], index: number): string {
+    return Object.keys(array[index])[0];
+  }
+
+  getElementArray(array: any[], index: number): any[] {
+    return array[index][this.getKeyByIndex(array, index)];
+  }
+
+  checkEmptyArray(array: any[]): boolean {
+    for (let i = 0; i < array.length; i++) {
+      if (this.getElementArray(array, i).length > 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 
 
 }

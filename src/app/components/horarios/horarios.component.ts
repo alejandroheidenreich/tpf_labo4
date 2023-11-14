@@ -23,9 +23,7 @@ export class HorariosComponent implements OnInit {
           this.email = res!.email as string;
           this.jor.traerJornada(this.email).subscribe(jornada => {
             this.jornada = jornada
-            console.log(this.jornada);
           });
-
         }
       });
   }

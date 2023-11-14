@@ -48,4 +48,17 @@ export class PacientesService {
       });
     });
   }
+
+  traerPorEmail(email: string): Observable<Paciente> {
+    return new Observable<Paciente>((observer) => {
+      onSnapshot(this.dataRef, (snap) => {
+        snap.docChanges().forEach(x => {
+          const data = x.doc.data() as Paciente;
+          if (data.email === email) {
+            observer.next(data);
+          }
+        });
+      });
+    });
+  }
 }

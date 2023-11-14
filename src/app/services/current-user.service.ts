@@ -12,6 +12,7 @@ export class CurrentUserService {
   public especialista!: Especialista;
   public paciente!: Paciente;
   public admin!: Admin;
+  public accionHorarios!: string;
 
   public currentUser: Usuario = {
     email: '',

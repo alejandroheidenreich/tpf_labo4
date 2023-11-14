@@ -9,8 +9,8 @@ export interface Dias {
 }
 
 export interface Horario {
-    hora: Hora;
     nroConsultorio: number;
+    hora: Hora;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

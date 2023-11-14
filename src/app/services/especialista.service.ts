@@ -38,6 +38,20 @@ export class EspecialistaService {
     });
   }
 
+  traerPorEmail(email: string): Observable<Especialista> {
+    return new Observable<Especialista>((observer) => {
+      onSnapshot(this.dataRef, (snap) => {
+        snap.docChanges().forEach(x => {
+          const data = x.doc.data() as Especialista;
+          if (data.email === email) {
+            observer.next(data);
+          }
+        });
+      });
+    });
+  }
+
+
   obtenerEspecialista(listaEspecialistas: Especialista[]) {
     const q = query(this.dataRef);
     const unsubscribe = onSnapshot(q, (snapshot) => {

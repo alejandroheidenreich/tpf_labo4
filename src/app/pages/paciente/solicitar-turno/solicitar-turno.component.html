@@ -1,30 +1,81 @@
-<div class="container py-4">
-    <div class="row">
-        <div class="col-6">
-            <div class="justify-content-evenly text-center">
-                <p-calendar (click)="cargarTurnos()" class="max-w-full p-component p-datepicker-monthpicker-disable"
-                    [(ngModel)]="date" [minDate]="minDate" [maxDate]="maxDate" [inline]="true"
-                    [selectOtherMonths]="false" [view]="'date'" [numberOfMonths]="1" [monthNavigator]="false"
-                    [yearNavigator]="false"></p-calendar>
+<button class="btn btn btn-sm btn-outline-secondary mb-3 mt-5 mx-5" (click)="reset()">Reiniciar</button>
+<div class="container py-4 ">
+
+    <div class="row justify-content-evenly align-items-center" style="margin-left: 15%;" *ngIf="filtroSelect == ''">
+        <div class="col-12 col-xl-5 py-4">
+            <div class="bg-dark circular-div" (click)="setFiltro('especialidad')">
+                <h2 class="centered-text">Especialidades</h2>
             </div>
         </div>
-        <div class="col-6" style="margin-top: 6rem;">
-            <div class="h-100 p-5 text-white bg-dark rounded-3 text-center">
-                <h2>Horarios - {{date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear()}}</h2>
+        <div class="col-12 col-xl-5 py-4">
+            <div class="bg-light circular-div" (click)="setFiltro('especialista')">
+                <h2 class="centered-text">Especialistas</h2>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="filtroSelect == 'especialista' && especialistaSelect === null">
+        <h1>Especialistas</h1>
+        <div class="row">
+            <div class="col-12 col-xl-3 bg-dark text-light border border-3 border-secondary especial-div"
+                (click)="setEspecialista(esp)" *ngFor="let esp of especialistas">
+                <div class="row justify-content-evenly mt-2">
+                    <div class="col-6">
+                        <h4 class="pt-3 text-capitalize">Dr. {{esp.nombre}} {{esp.apellido}}</h4>
+
+                    </div>
+                    <div class="col-2 mx-2">
+                        <img src="{{esp.img}}" class="rounded-5 mt-3" style="width: 60px; height: 60px;" alt="imgDoc">
+                    </div>
+                </div>
                 <hr>
-                <div class="container text-center">
-                    <div class="row"></div>
-                    <div *ngIf="horarios.length > 0; else elseBlock">
-                        <div class="col-12 mt-1" *ngFor="let horario of horarios">
-                            <button class="btn btn-outline-primary col-12">
-                                {{horario.hora}}
+                <h5 class="mx-2">Especialidades:</h5>
+                <div *ngFor="let especialidad of esp.especialidad" class="mx-5">
+                    <h6>{{especialidad}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="filtroSelect == 'especialidad' && especialidadSelect === ''">
+        <h1>Especialidades</h1>
+        <hr>
+        <div class="row">
+            <div class="col-2 bg-dark text-light text-center rounded-3 mx-2 mb-2 py-1 especial-div align-items-center"
+                *ngFor="let esp of especialidades" (click)="setEspecialidad(esp.nombre)">
+                <h6 class="pt-3 text-capitalize">{{esp.nombre}}</h6>
+            </div>
+            <hr>
+
+        </div>
+    </div>
+
+
+    <div class="row justify-content-evenly" *ngIf="turnosDisponibles !== null">
+        <ng-container *ngFor="let elemento of turnosDisponibles; let i = index">
+            <div class="col-12 col-xl-3 py-1" *ngIf="getElementArray(turnosDisponibles, i).length > 0">
+                <div class="h-100 text-white bg-dark rounded-3 text-center ">
+                    <div class="col-12 bg-primary text-dark rounded-3">
+                        <h3 class="pt-3 text-capitalize">{{elemento.dia}} - {{ getKeyByIndex(turnosDisponibles, i) }}
+                        </h3>
+                        <hr>
+                    </div>
+                    <div class="container py-2">
+                        <div class="row justify-content-evenly"
+                            *ngFor="let horario of getElementArray(turnosDisponibles, i)">
+                            <button (click)="generarTurno(getKeyByIndex(turnosDisponibles, i),horario)"
+                                class="btn col-8 mb-1" ngClass="{{horario.disponible? 'btn-outline-primary'
+                                :'btn-outline-secondary disabled'}}">
+                                {{horario.horario.hora}}
                             </button>
                         </div>
                     </div>
-                    <ng-template #elseBlock>
-                        <span>No tiene horarios en este dia</span>
-                    </ng-template>
                 </div>
+            </div>
+        </ng-container>
+        <div *ngIf="checkEmptyArray(turnosDisponibles)">
+            <div class="bg-primary text-dark rounded-3 py-4 text-center">
+                <h3>No hay horarios disponibles.</h3>
             </div>
         </div>
     </div>

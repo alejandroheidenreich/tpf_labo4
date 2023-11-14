@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Especialista } from 'src/app/interfaces/especialista.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
@@ -14,7 +15,7 @@ export class MiPerfilComponent implements OnInit {
 
   public especialista!: Especialista;
 
-  constructor(private cUser: CurrentUserService, private auth: AuthService, private userServ: UsuarioService) { }
+  constructor(private cUser: CurrentUserService, private auth: AuthService, private userServ: UsuarioService, private router: Router) { }
 
   ngOnInit(): void {
     this.auth.getUser().then((user) => {
@@ -27,6 +28,11 @@ export class MiPerfilComponent implements OnInit {
     });
   }
 
+
+  goTo(url: string, accion: string): void {
+    this.cUser.accionHorarios = accion;
+    this.router.navigateByUrl(url);
+  }
 
 
 }

@@ -1,18 +1,29 @@
-<!-- <div class="container py-4">
-
-    <div class="layout">
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
-        <div>4</div>
-        <div>5</div>
-        <div>6</div>
-        <div>7</div>
-        <div>8</div>
-        <div>9</div>
+<div class="container py-4">
+    <h1>Mis Turnos</h1>
+    <hr>
+    <div class="row" *ngIf="turnos.length > 0">
+        <div class="col-4 bg-dark text-light rounded-3 text-left pt-3" *ngFor="let turno of turnos">
+            <h3>Especialista: {{getEspecialista(turno.especialistaEmail)}}</h3>
+            <h4>Fecha: {{turno.fecha}}</h4>
+            <h4>Hora: {{turno.horario.hora}}</h4>
+            <h4>Nro. Consultorio: {{turno.horario.nroConsultorio}}</h4>
+            <h4>Estado: {{turno.estado}}</h4>
+            <hr>
+            <div class="row">
+                <div class="col-3 mb-3">
+                    <button class="btn btn-outline-danger">Cancelar</button>
+                </div>
+                <div class="col-3 mb-3">
+                    <button class="btn btn-outline-secondary">Ver Reseña</button>
+                </div>
+                <div class="col-3 mb-3">
+                    <button class="btn btn-outline-info">Completar Encuesta</button>
+                </div>
+                <div class="col-3 mb-3">
+                    <button class="btn btn-outline-warning">Calificar Atencion</button>
+                </div>
+            </div>
+            <!-- botones cancelar turno, ver reseña, completa encuesta, calificar atencion -->
+        </div>
     </div>
-</div> -->
-<div class="container">
-
-
 </div>

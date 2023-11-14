@@ -18,6 +18,8 @@ export class EspecialistasComponent implements OnInit {
   }
 
   toggleActive(esp: Especialista) {
+    console.log(esp);
+
     esp.active = !esp.active;
     this.espService.updateEspecialista(esp);
     this.espService.traer().subscribe(data => this.especialistas = data);

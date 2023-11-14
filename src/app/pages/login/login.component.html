@@ -20,11 +20,11 @@
                     <h3>Volver</h3>
                 </a>
 
-                <div class="social-icons">
+                <!-- <div class="social-icons">
                     <a (click)="loadAdmin()" class="social-login__icon fa fa-key"></a>
                     <a (click)="loadPaciente()" class="social-login__icon fa fa-user"></a>
                     <a (click)="loadEspecialista()" class="social-login__icon fa fa-user-md"></a>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="screen__background">
@@ -33,5 +33,45 @@
             <span class="screen__background__shape screen__background__shape2"></span>
             <span class="screen__background__shape screen__background__shape1"></span>
         </div>
+    </div>
+</div>
+
+
+<div class="floating-container">
+    <div class="floating-button"><i class="fa fa-sign-in"></i></div>
+    <div class="element-container">
+
+        <a (click)="loadAdmin()">
+            <span class="float-element tooltip-left">
+                <img src="https://firebasestorage.googleapis.com/v0/b/tpf-labo4.appspot.com/o/usuarios%2F1698772930929-admin.png?alt=media&token=bfa5a904-de7c-44b6-a92b-26e73f20dff4"
+                    alt="" class="imgRedonda">
+            </span>
+        </a>
+
+        <span class="float-element" (click)="loadEspecialista()">
+            <img src="https://firebasestorage.googleapis.com/v0/b/tpf-labo4.appspot.com/o/usuarios%2F1698841674333-rene.jpeg?alt=media&token=4a3fa2ff-6302-41b5-a26d-13d635e23bae"
+                alt="" class="imgRedonda">
+        </span>
+
+        <span class="float-element" (click)="loadEspecialista2()">
+            <img src="https://firebasestorage.googleapis.com/v0/b/tpf-labo4.appspot.com/o/usuarios%2F1698624812630-retrato-doctor.jpg?alt=media&token=b85cdf5b-2cae-4876-b48c-5455c630da86"
+                alt="" class="imgRedonda">
+        </span>
+
+        <span class="float-element" (click)="loadPaciente()">
+            <img src="https://firebasestorage.googleapis.com/v0/b/tpf-labo4.appspot.com/o/usuarios%2F1699711485054-20480653.jpeg?alt=media&token=83ba051c-eea1-437e-a927-21754b8f40a9"
+                alt="" class="imgRedonda">
+        </span>
+
+        <span class="float-element" (click)="loadPaciente2()">
+            <img src="https://firebasestorage.googleapis.com/v0/b/tpf-labo4.appspot.com/o/usuarios%2F1699711727485-13686838.jpeg?alt=media&token=b1552a19-2e87-4285-a537-60a60370ae0a"
+                alt="" class="imgRedonda">
+        </span>
+
+        <span class="float-element" (click)="loadPaciente3()">
+            <img src="https://firebasestorage.googleapis.com/v0/b/tpf-labo4.appspot.com/o/usuarios%2F1699711821683-13500559.jpeg?alt=media&token=95a68bc5-f1c2-4535-9e76-7546dd6ba321"
+                alt="" class="imgRedonda">
+        </span>
+
     </div>
 </div>

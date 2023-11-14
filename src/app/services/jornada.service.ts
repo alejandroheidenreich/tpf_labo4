@@ -11,7 +11,7 @@ export class JornadaService {
   public jornada!: Jornada;
 
   private espJorRef = collection(this.firestore, 'jornada-especialista');
-  private jorRef = collection(this.firestore, 'jornada');
+  private cronoRef = collection(this.firestore, 'cronograma');
   constructor(private firestore: Firestore) { }
 
 
@@ -21,6 +21,13 @@ export class JornadaService {
     nuevaJornada.id = docs.id;
     setDoc(docs, nuevaJornada)
   }
+
+  updateJornada(jornada: Jornada): void {
+    if (jornada === null) return;
+    const docs = doc(this.espJorRef, jornada.id);
+    updateDoc(docs, { dias: jornada.dias });
+  }
+
 
   traerJornada(email: string): Observable<Jornada> {
     return new Observable<Jornada>((observer) => {
@@ -43,10 +50,8 @@ export class JornadaService {
       onSnapshot(this.espJorRef, (snap) => {
         let jornada: Jornada[] = [];
         snap.docChanges().forEach(x => {
-
-
           const data = x.doc.data() as Jornada;
-          console.log("SOY DATA", data);
+          //console.log("SOY DATA", data);
           jornada.push(data);
         });
         observer.next(jornada);
@@ -246,7 +251,7 @@ export class JornadaService {
     }
 
 
-    const jornada = {
+    const cronograma = {
       consultorio1: dias,
       consultorio2: dias,
       consultorio3: dias,
@@ -257,14 +262,13 @@ export class JornadaService {
 
 
 
-    const col = collection(this.firestore, 'jornada');
-    addDoc(col, jornada);
+    addDoc(this.cronoRef, cronograma);
   }
 
 
   traerCronograma(): Observable<Cronograma> {
     return new Observable<Cronograma>((observer) => {
-      onSnapshot(this.jorRef, (snap) => {
+      onSnapshot(this.cronoRef, (snap) => {
         snap.docChanges().forEach(x => {
           const crono = x.doc.data();
           observer.next(crono);
@@ -285,7 +289,7 @@ export class JornadaService {
 
   updateCronograma(nuevoCrono: Cronograma): void {
     if (nuevoCrono === null) return;
-    const docs = doc(this.jorRef, 'i4JYWqIosI5lNiXo9JQB');
+    const docs = doc(this.cronoRef, '9DtsnnDyXPGlrtCaWiYl');
     updateDoc(docs, nuevoCrono);
   }
 

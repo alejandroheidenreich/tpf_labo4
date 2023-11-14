@@ -117,16 +117,35 @@ export class LoginComponent {
       });
   }
 
+
   loadAdmin() {
     this.form.controls['email'].setValue('admin@admin.com');
     this.form.controls['clave'].setValue('admin1');
+    this.onSubmit();
   }
   loadPaciente() {
-    this.form.controls['email'].setValue('xilapi5763@jybra.com');
-    this.form.controls['clave'].setValue('paciente');
+    this.form.controls['email'].setValue('sacoy70715@glalen.com');
+    this.form.controls['clave'].setValue('123123');
+    this.onSubmit();
+  }
+  loadPaciente2() {
+    this.form.controls['email'].setValue('gicasob976@glalen.com');
+    this.form.controls['clave'].setValue('123123');
+    this.onSubmit();
+  }
+  loadPaciente3() {
+    this.form.controls['email'].setValue('kaveven837@jucatyo.com');
+    this.form.controls['clave'].setValue('123123');
+    this.onSubmit();
   }
   loadEspecialista() {
-    this.form.controls['email'].setValue('lexol26062@hondabbs.com');
-    this.form.controls['clave'].setValue('especialista');
+    this.form.controls['email'].setValue('yobiv99914@hondabbs.com');
+    this.form.controls['clave'].setValue('123123');
+    this.onSubmit();
+  }
+  loadEspecialista2() {
+    this.form.controls['email'].setValue('tatisir750@hondabbs.com');
+    this.form.controls['clave'].setValue('123123');
+    this.onSubmit();
   }
 }

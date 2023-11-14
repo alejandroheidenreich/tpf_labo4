@@ -9,11 +9,12 @@ import { PacientesComponent } from './pacientes/pacientes.component';
 import { AdminsComponent } from './admins/admins.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterPacienteComponent } from '../register-paciente/register-paciente.component';
+import { TurnosComponent } from './turnos/turnos.component';
 
 
 @NgModule({
   declarations: [
-    UsuariosComponent, SidebarComponent, EspecialistasComponent, PacientesComponent, AdminsComponent,
+    UsuariosComponent, SidebarComponent, EspecialistasComponent, PacientesComponent, AdminsComponent, TurnosComponent
   ],
   imports: [
     CommonModule,

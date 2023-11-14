@@ -10,12 +10,12 @@
             <div class="col-md-6">
                 <div class="h-100 p-5 text-white bg-dark rounded-3">
                     <div class="row justify-content-evenly text-center">
-                        <div class="col-6">
+                        <!-- <div class="col-6">
 
                             <h2>Perfil</h2>
-                        </div>
+                        </div> -->
                         <div class="col-6">
-                            <img src={{especialista.img}} alt="" style="width: 40px;height: 40px;" class="img-perf">
+                            <img src={{especialista.img}} alt="img perfil" class="imgRedonda">
 
                         </div>
                     </div>
@@ -29,23 +29,22 @@
                     <h6 *ngFor="let esp of especialista.especialidad"> {{esp}}</h6>
 
                     <hr>
-                    <button class="btn btn-outline-light" type="button">Editar</button>
+                    <!-- <button class="btn btn-outline-light" type="button">Editar</button> -->
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="h-100 p-5 bg-dark border rounded-3 text-light">
-                    <div class="row justify-content-between">
-                        <div class="col-8">
-                            <h2>Jornada Semanal</h2>
-                        </div>
-                        <div class="col-2"><button class="btn btn-outline-secondary" type="button">Editar</button>
-                        </div>
-                    </div>
-
+                    <h2>Jornada Semanal</h2>
                     <hr>
-
                     <div class="container text-center">
                         <app-horarios></app-horarios>
+                    </div>
+                    <div class="text-center">
+
+                        <button class="btn btn-outline-success mx-5" type="button"
+                            (click)="goTo('/especialista/mis-horarios','agregar')">Agregar</button>
+                        <button class="btn btn-outline-primary mx-5" type="button"
+                            (click)="goTo('/especialista/mis-horarios','editar')">Editar</button>
                     </div>
                 </div>
             </div>

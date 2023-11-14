@@ -1,24 +1,28 @@
-import { Hora, Horario } from "./jornada.interface";
+import { Dias, Hora, Horario } from "./jornada.interface";
 
 
 export interface Turno {
     horario: Horario,
-    fecha: Date,
+    fecha: string,
     pacienteEmail: string,
     especialistaEmail: string,
     especialidad: string,
     estado: string,
+    id: string,
+    // reseña: string,
+    // encuesta: string,
 }
 
 export interface DiaAtencion {
-    fecha: Date,
+    fecha: string,
     dia: string,
     horarios: HorarioAtencion[];
-
 }
 
 export interface HorarioAtencion {
-    hora: Hora;
-    nroConsultorio: number;
-    disponible: boolean;
+    horario: Horario;
+    especialistaEmail: string,
+    disponible: boolean,
+
 }
+

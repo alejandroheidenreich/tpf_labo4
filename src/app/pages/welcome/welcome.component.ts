@@ -23,12 +23,6 @@ export class WelcomeComponent implements OnInit {
 
   accion() {
     //this.jor.generarJornadaInicial();
-    // this.jor.traer().subscribe(res => {
-    //   //console.log(res);
-    //   const a = this.jor.getLunes(res);
-    //   console.log("Fin", a);
-
-    // });
   }
 
 }

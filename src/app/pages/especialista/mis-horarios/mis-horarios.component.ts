@@ -1,8 +1,9 @@
+import { IfStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Cronograma, Dias, Horario, HorarioCronograma, Jornada, JornadaDiaView, convertirJornadaACronograma, esJornadaValida } from 'src/app/interfaces/jornada.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { CurrentUserService } from 'src/app/services/current-user.service';
 import { JornadaService } from 'src/app/services/jornada.service';
-import { LoginComponent } from '../../login/login.component';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,6 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class MisHorariosComponent implements OnInit {
 
+  public accion: string = '';
   public cronograma!: Cronograma;
   public email: string = '';
   public lunes!: JornadaDiaView;
@@ -34,26 +36,42 @@ export class MisHorariosComponent implements OnInit {
   public juevesHorario!: Horario[];
   public viernesHorario!: Horario[];
   public sabadoHorario!: Horario[];
+  public jornadaVieja!: Jornada;
 
-  constructor(private jor: JornadaService, private auth: AuthService) { }
+  constructor(private cUser: CurrentUserService, private jor: JornadaService, private auth: AuthService) { }
 
   ngOnInit(): void {
-    this.jor.traerCronograma().subscribe((res) => {
-      this.lunes = this.jor.getHorario(res, 'lunes');
-      this.martes = this.jor.getHorario(res, 'martes');
-      this.miercoles = this.jor.getHorario(res, 'miercoles');
-      this.jueves = this.jor.getHorario(res, 'jueves');
-      this.viernes = this.jor.getHorario(res, 'viernes');
-      this.sabado = this.jor.getHorario(res, 'sabado');
-
-      this.filtrarTomados();
-      this.cronograma = res;
-    });
-
+    this.accion = this.cUser.accionHorarios;
     this.auth.getUser()
       .then((res) => {
         if (res) {
           this.email = res!.email as string;
+          this.jor.traerJornada(this.email).subscribe(data => {
+            this.jornadaVieja = data;
+            if (this.accion == "agregar") {
+              this.jor.traerCronograma().subscribe((res) => {
+                this.lunes = this.jor.getHorario(res, 'lunes');
+                this.martes = this.jor.getHorario(res, 'martes');
+                this.miercoles = this.jor.getHorario(res, 'miercoles');
+                this.jueves = this.jor.getHorario(res, 'jueves');
+                this.viernes = this.jor.getHorario(res, 'viernes');
+                this.sabado = this.jor.getHorario(res, 'sabado');
+
+                this.filtrarTomados();
+                this.cronograma = res;
+              });
+            }
+            else if (this.accion == "editar") {
+              this.lunesHorario = this.jornadaVieja.dias['lunes'];
+              this.martesHorario = this.jornadaVieja.dias['martes'];
+              this.miercolesHorario = this.jornadaVieja.dias['miercoles'];
+              this.juevesHorario = this.jornadaVieja.dias['jueves'];
+              this.viernesHorario = this.jornadaVieja.dias['viernes'];
+              this.sabadoHorario = this.jornadaVieja.dias['sabado'];
+
+            }
+          }
+          )
         }
       });
   }
@@ -82,6 +100,7 @@ export class MisHorariosComponent implements OnInit {
     return nuevo;
   }
 
+
   guardar() {
     this.lunesHorario = [];
     this.martesHorario = [];
@@ -96,7 +115,6 @@ export class MisHorariosComponent implements OnInit {
     this.generarJornada(this.jueves, this.juevesHorario);
     this.generarJornada(this.viernes, this.viernesHorario);
     this.generarJornada(this.sabado, this.sabadoHorario);
-
 
     this.diasEsp = {
       lunes: this.lunesHorario,
@@ -113,20 +131,27 @@ export class MisHorariosComponent implements OnInit {
       id: '',
     };
 
-    console.log("Jornada Final: ", this.jornadaEsp);
-
-    const valida = esJornadaValida(this.jornadaEsp);
-
-    if (valida) {
-      console.log("Es valida");
+    if (esJornadaValida(this.jornadaEsp)) {
       const crono = convertirJornadaACronograma(this.jornadaEsp);
-      console.log("PARA ACTUALIZAR:", crono);
-
       const actCrono = this.jor.actualizarCronograma(this.cronograma, crono);
 
-      console.log("ACTUALIZADO: ", actCrono);
       this.jor.updateCronograma(actCrono);
-      this.jor.agregarJornada(this.jornadaEsp);
+
+      if (this.jornadaVieja) {
+        this.jornadaEsp.id = this.jornadaVieja.id;
+        for (const dia in this.jornadaVieja.dias) {
+          for (const horarios of this.jornadaVieja.dias[dia]) {
+            this.jornadaEsp.dias[dia] = this.jornadaEsp.dias[dia].concat(horarios);
+            this.ordenarPorHora(this.jornadaEsp.dias[dia]);
+          }
+        }
+        this.jor.updateJornada(this.jornadaEsp);
+        console.log(this.jornadaEsp.dias);
+
+      } else {
+        this.jor.agregarJornada(this.jornadaEsp);
+      }
+
 
     }
     else {
@@ -155,4 +180,16 @@ export class MisHorariosComponent implements OnInit {
     }
   }
 
+  ordenarPorHora(horarios: Horario[]) {
+    horarios.sort((a: Horario, b: Horario) => {
+      // Convertir las horas a objetos Date para comparar
+      const horaA = new Date(`1970-01-01T${a.hora}`);
+      const horaB = new Date(`1970-01-01T${b.hora}`);
+
+      // Comparar las horas
+      return horaA.getTime() - horaB.getTime();
+    });
+  }
 }
+
+
