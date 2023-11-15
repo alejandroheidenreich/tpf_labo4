@@ -105,7 +105,12 @@
                                 </span>
                             </div>
                         </div>
-                        <button class="w-100 btn btn-primary btn-lg" type="submit">Registrarse</button>
+                        <div class="" style="margin-left: 50px;" *ngIf="form.valid">
+                            <re-captcha (resolved)="resolved($event)"
+                                siteKey="6LczZhApAAAAAInPmFvFW0s_3sLQ2z7p5ElsK5zg"></re-captcha>
+                        </div>
+                        <button class="w-100 btn btn-primary btn-lg" type="submit" ngClass="{{captcha == ''? 'disabled'
+                        :''}}">Registrarse</button>
                     </form>
                 </div>
             </div>

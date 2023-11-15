@@ -3,11 +3,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Especialidad } from 'src/app/interfaces/especialidad.interface';
 import { Especialista } from 'src/app/interfaces/especialista.interface';
 import { Horario, Jornada } from 'src/app/interfaces/jornada.interface';
+import { Paciente } from 'src/app/interfaces/paciente.interface';
 import { HorarioAtencion, Turno } from 'src/app/interfaces/turno.inteface';
 import { AuthService } from 'src/app/services/auth.service';
 import { EspecialidadService } from 'src/app/services/especialidad.service';
 import { EspecialistaService } from 'src/app/services/especialista.service';
 import { JornadaService } from 'src/app/services/jornada.service';
+import { PacientesService } from 'src/app/services/pacientes.service';
 import { TurnoService } from 'src/app/services/turno.service';
 
 
@@ -23,6 +25,8 @@ export class SolicitarTurnoComponent implements OnInit {
   public turno!: Turno;
   public horarios: Horario[] = [];
   public pacienteEmail!: string;
+  public pacientes: Paciente[] = [];
+  public pacienteSelect!: Paciente;
   public turnosActuales!: Turno[];
   public especialistas: Especialista[] = [];
   public especialidades: Especialidad[] = [];
@@ -31,10 +35,10 @@ export class SolicitarTurnoComponent implements OnInit {
   public especialistaSelect: Especialista | null = null;
 
 
-  constructor(private spinner: NgxSpinnerService, private jor: JornadaService, private tur: TurnoService, private auth: AuthService, private esp: EspecialistaService, private especial: EspecialidadService) { }
+  constructor(private spinner: NgxSpinnerService, private jor: JornadaService, private tur: TurnoService, private auth: AuthService, private esp: EspecialistaService, private especial: EspecialidadService, private pac: PacientesService) { }
 
   ngOnInit(): void {
-    this.auth.getUserLogged().subscribe(user => this.pacienteEmail = user?.email!);
+    this.pac.traer().subscribe(data => this.pacientes = data)
     this.esp.traer().subscribe(data => this.especialistas = data);
     this.especial.traer().subscribe(data => this.especialidades = data);
     this.jor.traerJornadas().subscribe(res => {
@@ -48,7 +52,6 @@ export class SolicitarTurnoComponent implements OnInit {
 
   test(algo: any) {
     console.log("ALGO: ", algo);
-
   }
 
   getEspecialista(email: string): string {
@@ -127,6 +130,16 @@ export class SolicitarTurnoComponent implements OnInit {
 
   }
 
+  setPaciente(pac: Paciente): void {
+    this.spinner.show();
+    setTimeout(() => {
+      this.pacienteSelect = pac;
+      console.log(this.pacienteSelect);
+      this.spinner.hide();
+    }, 1000);
+
+  }
+
   setEspecialidad(esp: string): void {
     this.spinner.show();
 
@@ -174,7 +187,7 @@ export class SolicitarTurnoComponent implements OnInit {
     this.turno = {
       horario: turno.horario,
       fecha: fecha,
-      pacienteEmail: this.pacienteEmail,
+      pacienteEmail: this.pacienteSelect.email,
       especialistaEmail: turno.especialistaEmail,
       especialidad: esp,
       estado: 'pendiente',

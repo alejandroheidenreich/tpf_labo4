@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { EspecialistaService } from 'src/app/services/especialista.service';
 import { ImagenService } from 'src/app/services/imagen.service';
 import Swal from 'sweetalert2';
+import { RecaptchaErrorParameters } from "ng-recaptcha";
 
 
 @Component({
@@ -31,6 +32,8 @@ export class RegisterEspecialistaComponent {
     img: ['', [Validators.required]],
     terminos: [false, [Validators.requiredTrue]],
   });
+  public captcha: string = '';
+
 
   constructor(private spinner: NgxSpinnerService, private fb: FormBuilder, private especialistaService: EspecialistaService, private auth: AuthService, private router: Router, private imagenService: ImagenService) { }
 
@@ -40,6 +43,15 @@ export class RegisterEspecialistaComponent {
 
   ngOnInit(): void {
     this.form.reset();
+  }
+
+  public resolved(captchaResponse: string): void {
+    //console.log(`Resolved captcha with response: ${captchaResponse}`);
+    this.captcha = captchaResponse;
+  }
+
+  public onError(errorDetails: RecaptchaErrorParameters): void {
+    console.log(`reCAPTCHA error encountered; details:`, errorDetails);
   }
 
   isValidField(field: string): boolean | null {
@@ -68,9 +80,7 @@ export class RegisterEspecialistaComponent {
     }
     return null;
   }
-  resolved(captchaResponse: string) {
-    console.log(`Resolved captcha with response: ${captchaResponse}`);
-  }
+
 
   onSubmit(): void {
     if (this.form.invalid) {

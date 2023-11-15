@@ -16,6 +16,16 @@ const routes: Routes = [
         loadChildren: () => import('./solicitar-turno/solicitar-turno.module')
           .then((mod) => mod.SolicitarTurnoModule),
       },
+      {
+        path: 'mi-perfil',
+        loadChildren: () => import('./mi-perfil/mi-perfil.module')
+          .then((mod) => mod.MiPerfilModule),
+      },
+      {
+        path: 'solicitar-turno',
+        loadChildren: () => import('./solicitar-turno/solicitar-turno.module')
+          .then((mod) => mod.SolicitarTurnoModule),
+      },
     ]
   },
 

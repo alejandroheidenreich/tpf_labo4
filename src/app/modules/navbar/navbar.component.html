@@ -14,7 +14,7 @@
                     <a class="nav-link active text-light" aria-current="page" (click)="goTo('/paciente')">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn text-light" (click)="logout()">Log out</a>
+                    <a class="nav-link active text-light" (click)="logout()">Log out</a>
                 </li>
                 <!-- <li class="nav-item dropdown ">
                     <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown"
@@ -29,6 +29,10 @@
                         <li><a class="dropdown-item" routerLink="/detalle-repartidor">Especialista</a></li>
                     </ul>
                 </li> -->
+                <li class="nav-item">
+                    <a class="nav-link active text-light" aria-current="page" (click)="goTo('/paciente/mi-perfil')">Mi
+                        Perfil</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link active text-light" aria-current="page" (click)="goTo('/paciente/mis-turnos')">Mis
                         Turnos</a>

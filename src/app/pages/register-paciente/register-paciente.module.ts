@@ -5,6 +5,7 @@ import { RegisterPacienteRoutingModule } from './register-paciente-routing.modul
 import { RegisterPacienteComponent } from './register-paciente.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TablaObrasComponent } from 'src/app/components/tabla-obra/tabla-obras.component';
+import { RecaptchaFormsModule, RecaptchaModule } from "ng-recaptcha";
 
 
 @NgModule({
@@ -14,7 +15,10 @@ import { TablaObrasComponent } from 'src/app/components/tabla-obra/tabla-obras.c
   imports: [
     CommonModule,
     RegisterPacienteRoutingModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
+  ],
+
 })
 export class RegisterPacienteModule { }

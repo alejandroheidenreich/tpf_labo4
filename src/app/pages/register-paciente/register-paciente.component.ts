@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ImagenService } from 'src/app/services/imagen.service';
 import { PacientesService } from 'src/app/services/pacientes.service';
 import Swal from 'sweetalert2';
+import { RecaptchaErrorParameters } from "ng-recaptcha";
 
 @Component({
   selector: 'app-register-paciente',
@@ -19,15 +20,9 @@ export class RegisterPacienteComponent {
   private user!: Usuario;
   private file1: any;
   private file2: any;
+  public captcha: string = '';
 
-  private test = {
-    nombre: 'Ricardo',
-    apellido: 'Arjona',
-    dni: 12647821,
-    email: 'yeroti1736@qianhost.com',
-    edad: 60
 
-  }
   public form: FormGroup = this.fb.group({
     nombre: ['', [Validators.required]],
     apellido: ['', [Validators.required]],
@@ -46,6 +41,8 @@ export class RegisterPacienteComponent {
   ngOnInit(): void {
     this.form.reset();
   }
+
+
 
   isValidField(field: string): boolean | null {
     return this.form.controls[field].errors && this.form.controls[field].touched
@@ -73,6 +70,17 @@ export class RegisterPacienteComponent {
     }
     return null;
   }
+
+  public resolved(captchaResponse: string): void {
+    //console.log(`Resolved captcha with response: ${captchaResponse}`);
+    this.captcha = captchaResponse;
+  }
+
+  public onError(errorDetails: RecaptchaErrorParameters): void {
+    console.log(`reCAPTCHA error encountered; details:`, errorDetails);
+  }
+
+
 
   onSubmit(): void {
     if (this.form.invalid) {

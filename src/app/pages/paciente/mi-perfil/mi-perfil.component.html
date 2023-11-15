@@ -1,0 +1,31 @@
+<main>
+    <div class="container py-4">
+        <header class="pb-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+                <span class="fs-4">Mi Perfil</span>
+            </a>
+        </header>
+
+        <div class="row align-items-md-stretch justify-content-evenly" *ngIf="paciente">
+            <div class="col-md-6 col-xl-6">
+                <div class="h-100 p-5 text-white bg-dark rounded-3">
+                    <div class="row justify-content-evenly text-center align-items-center">
+                        <div class="col-6">
+                            <h5>{{paciente.apellido}}, {{paciente.nombre}}</h5>
+                        </div>
+                        <div class="col-6">
+                            <img src={{paciente.img1}} alt="img perfil" class="imgRedonda">
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="margin-left: 20%;">
+
+                        <h5>DNI: {{paciente.dni}}</h5>
+                        <h5>Email: {{paciente.email}}</h5>
+                        <h5>Edad: {{paciente.edad}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

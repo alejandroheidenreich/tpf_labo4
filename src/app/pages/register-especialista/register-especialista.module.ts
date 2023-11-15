@@ -5,7 +5,7 @@ import { RegisterEspecialistaRoutingModule } from './register-especialista-routi
 import { RegisterEspecialistaComponent } from './register-especialista.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TablaEspecialidadComponent } from 'src/app/components/tabla-especialidad/tabla-especialidad.component';
-//import { RecaptchaFormsModule, RecaptchaModule } from "ng-recaptcha";
+import { RecaptchaFormsModule, RecaptchaModule } from "ng-recaptcha";
 
 
 @NgModule({
@@ -16,8 +16,8 @@ import { TablaEspecialidadComponent } from 'src/app/components/tabla-especialida
     CommonModule,
     RegisterEspecialistaRoutingModule,
     ReactiveFormsModule,
-    //RecaptchaModule,
-    //RecaptchaFormsModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ]
 })
 export class RegisterEspecialistaModule { }
