@@ -11,6 +11,7 @@ import { EspecialistaService } from 'src/app/services/especialista.service';
 import { JornadaService } from 'src/app/services/jornada.service';
 import { PacientesService } from 'src/app/services/pacientes.service';
 import { TurnoService } from 'src/app/services/turno.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -197,7 +198,15 @@ export class SolicitarTurnoComponent implements OnInit {
     }
 
     this.tur.agregarTurno(this.turno);
-    this.reset();
+    Swal.fire({
+      position: 'bottom-end',
+      icon: 'success',
+      title: 'Turno generado',
+      footer: "Recuerde presentarse con el carnet de obra social",
+      showConfirmButton: false,
+      timer: 1500
+    }).then(() => this.reset());
+    ;
   }
 
   convertirDiaATexto(dia: number): string {
