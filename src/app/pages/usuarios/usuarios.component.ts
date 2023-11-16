@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class UsuariosComponent {
 
-  public select: string = 'Usuarios';
+  public select: string = 'usuarios';
 
   getSelect(selector: string): void {
     this.select = selector;

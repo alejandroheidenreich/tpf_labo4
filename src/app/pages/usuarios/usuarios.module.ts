@@ -13,6 +13,7 @@ import { TurnosComponent } from './turnos/turnos.component';
 import { SolicitarTurnoComponent } from './solicitar-turno/solicitar-turno.component';
 
 
+
 @NgModule({
   declarations: [
     UsuariosComponent, SidebarComponent, EspecialistasComponent, PacientesComponent, AdminsComponent, TurnosComponent, SolicitarTurnoComponent
