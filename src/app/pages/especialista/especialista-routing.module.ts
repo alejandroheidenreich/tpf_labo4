@@ -7,6 +7,10 @@ const routes: Routes = [
     path: '', component: EspecialistaComponent,
     children: [
       {
+        path: '', loadChildren: () => import('./home/home.module')
+          .then((mod) => mod.HomeModule),
+      },
+      {
         path: 'mis-turnos', loadChildren: () => import('./mis-turnos/mis-turnos.module')
           .then((mod) => mod.MisTurnosModule),
       },

@@ -1,0 +1,5 @@
+.especial-div:hover{
+    background-color: #3498db !important;
+    color: black !important;
+    cursor: pointer;
+  }
