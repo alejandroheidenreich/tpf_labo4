@@ -27,7 +27,7 @@ export class SolicitarTurnoComponent implements OnInit {
   public horarios: Horario[] = [];
   public pacienteEmail!: string;
   public pacientes: Paciente[] = [];
-  public pacienteSelect!: Paciente;
+  public pacienteSelect: Paciente | null = null;
   public turnosActuales!: Turno[];
   public especialistas: Especialista[] = [];
   public especialidades: Especialidad[] = [];
@@ -110,6 +110,7 @@ export class SolicitarTurnoComponent implements OnInit {
     this.especialistaSelect = null;
     this.especialidadSelect = "";
     this.turnosDisponibles = null;
+    this.pacienteSelect = null;
   }
 
   setFiltro(selector: string): void {
@@ -188,7 +189,7 @@ export class SolicitarTurnoComponent implements OnInit {
     this.turno = {
       horario: turno.horario,
       fecha: fecha,
-      pacienteEmail: this.pacienteSelect.email,
+      pacienteEmail: this.pacienteSelect!.email,
       especialistaEmail: turno.especialistaEmail,
       especialidad: esp,
       estado: 'pendiente',

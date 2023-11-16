@@ -65,7 +65,7 @@
                             *ngFor="let horario of getElementArray(turnosDisponibles, i)">
                             {{getEspecialista(horario.especialistaEmail)}}
                             <button (click)="generarTurno(getKeyByIndex(turnosDisponibles, i),horario)"
-                                class="btn col-8 mb-1" ngClass="{{horario.disponible? 'btn-outline-primary'
+                                class="btn col-8 mb-1 fw-bold" ngClass="{{horario.disponible? 'btn-outline-primary'
                                 :'btn-outline-secondary disabled'}}">
                                 {{horario.horario.hora}}
                             </button>
