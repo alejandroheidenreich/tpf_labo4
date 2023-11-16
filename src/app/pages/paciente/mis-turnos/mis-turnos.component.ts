@@ -67,51 +67,104 @@ export class MisTurnosComponent implements OnInit {
     return turno.reseña;
   }
 
-  async calificar(turno: Turno) {
-    const { value: calificacion } = await Swal.fire({
-      title: 'Califique la atencion',
-      input: 'select',
-      inputOptions: {
-        'Excelente': 'Excelente',
-        'Muy Bueno': 'Muy Bueno',
-        'Bueno': 'Bueno',
-        'Malo': 'Malo',
-      },
-      inputPlaceholder: 'Puntaje',
-      showCancelButton: true,
-      inputValidator: (value) => {
-        return new Promise((resolve) => {
-          if (!value) {
-            resolve('Debes seleccionar una opcion');
-          } else {
-            resolve();
-          }
-        });
-      },
+  async completarEncuesta(turno: Turno) {
+
+    const { value: formValues } = await Swal.fire({
+      title: "Multiple inputs",
+      html: `
+      <label for="swal-input1">1. ¿Cómo calificarías la amabilidad del personal en tu última visita a nuestra clínica?</label>
+<input id="swal-input1" class="swal2-input">
+
+<label for="swal-input2">2. En una escala del 1 al 10, ¿qué tan satisfecho estás con la claridad de las explicaciones proporcionadas por nuestro personal médico sobre tu condición de salud y el plan de tratamiento?</label>
+<input id="swal-input2" class="swal2-input" type="number" min="1" max="10">
+
+<label for="swal-input3">3. ¿Consideras que el tiempo de espera en la clínica fue razonable en tu última visita?</label>
+<input id="swal-input3" class="swal2-input" type="text">
+
+      `,
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          (document.getElementById("swal-input1") as HTMLInputElement).value,
+          (document.getElementById("swal-input2") as HTMLInputElement).value,
+          (document.getElementById("swal-input3") as HTMLInputElement).value,
+        ];
+      }
     });
-    if (calificacion) {
-      turno.calificacion = calificacion;
-      this.tur.updateTurno(turno);
-      this.traerTurnos();
+    if (formValues) {
+      Swal.fire({
+        title: "Encuesta completada!",
+        text: `Gracias por completar nuestra encuensta`,
+        icon: "success",
+      }).then(() => {
+        console.log(formValues);
+        turno.encuesta = formValues;
+        this.tur.updateTurno(turno);
+        this.traerTurnos();
+      });
+    }
+
+  }
+
+  async calificar(turno: Turno) {
+    const { value: text } = await Swal.fire({
+      input: "textarea",
+      inputLabel: "Calificar Atencion",
+      inputPlaceholder: "Ingrese un comentario de como fue la atención del Especialista.",
+      inputAttributes: {
+        "aria-label": "Type your message here"
+      },
+      showCancelButton: true
+    });
+    if (text) {
+      Swal.fire({
+        title: "Calificado!",
+        text: `Gracias por calificar nuestro personal`,
+        icon: "success",
+      }).then(() => {
+        turno.calificacion = text;
+        this.tur.updateTurno(turno);
+        this.traerTurnos();
+      });
+
     }
   }
 
   async cancelar(turno: Turno) {
-    const { value: text } = await Swal.fire({
-      input: 'textarea',
-      inputLabel: 'Razon de cancelacion',
-      inputPlaceholder: 'Ingrese la razon por la cual quiere cancelar el turno',
-      inputAttributes: {
-        'aria-label': 'Type your message here',
-      },
+    Swal.fire({
+      title: "Cancelar Turno?",
+      text: "No podras revertirlo",
+      icon: "warning",
       showCancelButton: true,
+      confirmButtonColor: "#339933",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Cancelar Turno"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { value: text } = await Swal.fire({
+          input: "textarea",
+          inputLabel: "Cancelar el Turno",
+          inputPlaceholder: "Ingrese la razon por la cual quiere cancelar el turno",
+          inputAttributes: {
+            "aria-label": "Type your message here"
+          },
+          showCancelButton: true
+        });
+        if (text) {
+          Swal.fire({
+            title: "Cancelado!",
+            text: `El turno fue cancelado con exito`,
+            icon: "error"
+          }).then(() => {
+            turno.reseña = text;
+            turno.estado = "cancelado";
+            this.tur.updateTurno(turno);
+            this.traerTurnos();
+          });
+        }
+
+      }
     });
-    if (text) {
-      turno.reseña = text;
-      turno.estado = 'rechazado';
-      this.tur.updateTurno(turno);
-      this.traerTurnos();
-    }
   }
 
   getEspecialista(email: string): string {

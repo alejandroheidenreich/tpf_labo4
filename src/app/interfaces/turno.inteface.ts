@@ -11,7 +11,7 @@ export interface Turno {
     id: string,
     reseña: string,
     calificacion: string,
-    // encuesta: string,
+    encuesta: string[],
 }
 
 export interface DiaAtencion {

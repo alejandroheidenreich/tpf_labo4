@@ -10,13 +10,15 @@
             <h4 class="text-capitalize">Estado: {{turno.estado}}</h4>
             <hr>
             <div class="row">
-                <div class="col-3 mb-3"  *ngIf="turno.estado == 'aceptado'">
+                <div class="col-3 mb-3" *ngIf="turno.estado == 'aceptado'">
                     <button class="btn btn-outline-danger">Cancelar</button>
                 </div>
                 <div class="col-3 mb-3" *ngIf="getResenia(turno) !== ''">
                     <button class="btn btn-outline-secondary" (click)="verResenia(turno)">Ver Reseña</button>
                 </div>
-                <div class="col-3 mb-3" *ngIf="turno.estado == 'finalizado' && getResenia(turno) !== ''">
+                <div class="col-3 mb-3"
+                    *ngIf="turno.estado == 'finalizado' && getResenia(turno) !== '' && turno.encuesta.length == 0"
+                    (click)="completarEncuesta(turno)">
                     <button class="btn btn-outline-info">Completar Encuesta</button>
                 </div>
                 <div class="col-3 mb-3" *ngIf="turno.estado == 'finalizado' && turno.calificacion == ''">

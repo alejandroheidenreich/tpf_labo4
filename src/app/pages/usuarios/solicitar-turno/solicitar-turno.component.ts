@@ -196,6 +196,7 @@ export class SolicitarTurnoComponent implements OnInit {
       id: '',
       reseña: '',
       calificacion: '',
+      encuesta: [],
     }
 
     this.tur.agregarTurno(this.turno);

@@ -23,7 +23,7 @@ export class MisTurnosComponent {
     this.traerTurnos();
   }
 
-  traerTurnos(){
+  traerTurnos() {
     this.auth.getUserLogged()
       .subscribe(user => {
         if (user) {
@@ -50,7 +50,7 @@ export class MisTurnosComponent {
   }
 
 
-  async test(){
+  async test() {
     const { value: text } = await Swal.fire({
       input: "textarea",
       inputLabel: "Message",
@@ -62,49 +62,146 @@ export class MisTurnosComponent {
     });
     if (text) {
       Swal.fire(text);
-    }else{
-      
+    } else {
+
     }
-    console.log("text:",text);
- 
+    console.log("text:", text);
   }
-  cancelar(turno: Turno): void {
+
+
+  async cancelar(turno: Turno) {
+    Swal.fire({
+      title: "Cancelar Turno?",
+      text: "No podras revertirlo",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#339933",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Cancelar Turno"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { value: text } = await Swal.fire({
+          input: "textarea",
+          inputLabel: "Cancelar el Turno",
+          inputPlaceholder: "Ingrese la razon por la cual quiere cancelar el turno",
+          inputAttributes: {
+            "aria-label": "Type your message here"
+          },
+          showCancelButton: true
+        });
+        if (text) {
+          Swal.fire({
+            title: "Cancelado!",
+            text: `El turno fue cancelado con exito`,
+            icon: "error"
+          }).then(() => {
+            turno.reseña = text;
+            turno.estado = "cancelado";
+            this.tur.updateTurno(turno);
+            this.traerTurnos();
+          });
+        }
+
+      }
+    });
   }
 
   async rechazar(turno: Turno) {
-    const { value: text } = await Swal.fire({
-      input: "textarea",
-      inputLabel: "Message",
-      inputPlaceholder: "Type your message here...",
-      inputAttributes: {
-        "aria-label": "Type your message here"
-      },
-      showCancelButton: true
+    Swal.fire({
+      title: "Rechazar Turno?",
+      text: "No podras revertirlo",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#339933",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Rechazar"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { value: text } = await Swal.fire({
+          input: "textarea",
+          inputLabel: "Rechazar el Turno",
+          inputPlaceholder: "Ingrese la razon por la cual quiere rechazar el turno",
+          inputAttributes: {
+            "aria-label": "Type your message here"
+          },
+          showCancelButton: true
+        });
+        if (text) {
+          Swal.fire({
+            title: "Rechazado!",
+            text: `El turno fue rechazado con exito`,
+            icon: "error"
+          }).then(() => {
+            turno.reseña = text;
+            turno.estado = "rechazado";
+            this.tur.updateTurno(turno);
+            this.traerTurnos();
+          });
+        }
+
+      }
     });
-    if (text) {
-      turno.reseña = text;
-      turno.estado = "rechazado";
-      this.tur.updateTurno(turno);
-      this.traerTurnos();
-    }
-    console.log(turno);
-    
   }
 
   aceptar(turno: Turno): void {
-
-    turno.estado = "aceptado";
-      this.tur.updateTurno(turno);
-      this.traerTurnos();
+    Swal.fire({
+      title: "Aceptar Turno?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#339933",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Aceptar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Aceptado!",
+          text: `El paciente lo visitada ${turno.fecha} a las ${turno.horario.hora} en el consultorio ${turno.horario.nroConsultorio}.`,
+          icon: "success"
+        }).then(() => {
+          turno.estado = "aceptado";
+          this.tur.updateTurno(turno);
+          this.traerTurnos();
+        });
+      }
+    });
   }
 
-  verCalificacion(turno: Turno){
+  verCalificacion(turno: Turno) {
     Swal.fire(turno.calificacion);
   }
 
-  finalizar(turno: Turno): void {
-    turno.estado = "finalizado";
-    this.tur.updateTurno(turno);
-    this.traerTurnos();
+  async finalizar(turno: Turno) {
+    Swal.fire({
+      title: "Finalizar Turno?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#339933",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Finalizar Turno"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { value: text } = await Swal.fire({
+          input: "textarea",
+          inputLabel: "Finalizacion de Turno",
+          inputPlaceholder: "Deje una reseña o comentario de la consulta y diagnóstico realizado...",
+          inputAttributes: {
+            "aria-label": "Type your message here"
+          },
+          showCancelButton: true
+        });
+        if (text) {
+          Swal.fire({
+            title: "Finalizado!",
+            text: `El paciente recibira su diagnóstico.`,
+            icon: "success"
+          }).then(() => {
+            turno.reseña = text;
+            turno.estado = "finalizado";
+            this.tur.updateTurno(turno);
+            this.traerTurnos();
+          });
+        }
+      }
+    });
   }
 }
