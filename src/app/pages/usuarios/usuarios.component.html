@@ -16,7 +16,31 @@
 
 
             <div *ngIf="select == 'usuarios'">
+                <main>
+                    <div class="container py-4">
+                        <div class="row align-items-md-stretch justify-content-evenly" *ngIf="admin">
+                            <div class="col-md-6 col-xl-6">
+                                <div class="h-100 p-5 text-white bg-dark rounded-3">
+                                    <div class="row justify-content-evenly text-center align-items-center">
+                                        <div class="col-6">
+                                            <h5>{{admin.nombre}} {{admin.apellido}}</h5>
+                                        </div>
+                                        <div class="col-6">
+                                            <img src={{admin.img}} alt="img perfil" class="imgRedonda">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div style="margin-left: 20%;">
 
+                                        <h5>DNI: {{admin.dni}}</h5>
+                                        <h5>Email: {{admin.email}}</h5>
+                                        <h5>Edad: {{admin.edad}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
             </div>
             <div *ngIf="select == 'especialista'">
                 <app-especialistas></app-especialistas>

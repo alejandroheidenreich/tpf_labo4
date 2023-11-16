@@ -13,14 +13,14 @@ export class MiPerfilComponent implements OnInit {
 
   public paciente!: Paciente;
 
-  constructor(private cUser: CurrentUserService, private auth: AuthService, private userServ: UsuarioService) { }
+  constructor(private auth: AuthService, private userServ: UsuarioService) { }
 
   ngOnInit(): void {
     this.auth.getUser().then((user) => {
       this.userServ.esPaciente(user?.email!).subscribe(
-        (esp) => {
-          if (esp)
-            this.paciente = esp as Paciente;
+        (pac) => {
+          if (pac)
+            this.paciente = pac as Paciente;
         }
       );
     });

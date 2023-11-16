@@ -15,5 +15,12 @@ app-sidebar{
 }
 /* Estilo del sidebar */
 
+.imgRedonda {
+  width:150px;
+  height:150px;
+  border-radius:150px;
+  border:10px solid #666;
+}
+
 
 
