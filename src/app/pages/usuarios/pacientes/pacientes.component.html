@@ -1,24 +1,7 @@
 <main>
-    <section class="py-5 text-center container">
-        <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Pacientes</h1>
-                <!-- <p class="lead text-muted">Something short and leading about the collection below—its contents, the
-                    creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it
-                    entirely.</p>
-                <p>
-                    <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                    <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-                </p> -->
-            </div>
-        </div>
-    </section>
-
-    <!-- <div class="album py-5 bg-dark" > -->
     <div class="container" *ngIf="pacientes">
-
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <div class="col" *ngFor="let paciente of pacientes">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" *ngIf="historialClinico.length == 0">
+            <div class="col-6" *ngFor="let paciente of pacientes">
                 <div class="card shadow-sm">
                     <img src={{paciente.img1}} alt="" class="img-perf">
                     <div class="card-body">
@@ -28,18 +11,44 @@
                         <h5>Edad: {{paciente.edad}}</h5>
                         <h5>Obra Social: {{paciente.obraSocial}}</h5>
 
-                        <!-- <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    (click)="getHistorial(paciente)">Ver Historiales</button>
+                                <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
                             </div>
-                            <small class="text-muted">9 mins</small>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- </div> -->
 
+        <div class="px-5 bg-dark rounded-3 mt-5 mb-5 pb-3" *ngIf="historialClinico.length > 0">
+            <div class="d-flex justify-content-between align-items-right">
+                <button type="button" class="btn btn-sm btn-outline-danger mt-3" (click)="reset()">Cerrar</button>
+            </div>
+            <div class="row justify-content-evenly text-center align-items-center text-dark bg-white rounded-3 mt-5 mb-5 pb-3"
+                *ngFor="let histoCli of historialClinico">
+                <div class="col-12 mt-3">
+                    <h5>Especialista: {{getEspecialista(histoCli.especialsitaEmail)}}</h5>
+                    <hr>
+                </div>
+                <div class="col-12">
+                    <h5>Altura: {{histoCli.altura}}</h5>
+                </div>
+                <div class="col-12">
+                    <h5>Peso: {{histoCli.peso}}</h5>
+                </div>
+                <div class="col-12">
+                    <h5>Temperatura: {{histoCli.temperatura}}</h5>
+                </div>
+                <div class="col-12">
+                    <h5>Presion: {{histoCli.presion}}</h5>
+                </div>
+                <div class="col-12" *ngFor="let dato of histoCli.datos; let i = index">
+                    <h5 class="text-capitalize">{{sacarKey(dato)}}: {{dato[sacarKey(dato)]}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>

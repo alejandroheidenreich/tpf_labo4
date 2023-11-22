@@ -26,6 +26,44 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12 col-xl-12 bg-dark rounded-3 mt-5">
+                <div class="row align-items-center mt-2">
+                    <div class="col-6">
+                        <h3 class="text-white mt-2 text-center">Historial Clinico</h3>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-outline-success" (click)="generarPDF()">Descargar Historial
+                            Clinico</button>
+                    </div>
+                </div>
+                <div class="px-5 " *ngIf="historialClinico.length > 0">
+                    <div class="row justify-content-evenly text-center align-items-center text-dark bg-white rounded-3 mt-5 mb-5 pb-3"
+                        *ngFor="let histoCli of historialClinico">
+                        <div class="col-12 mt-3">
+                            <h5>Especialista: {{getEspecialista(histoCli.especialsitaEmail)}}</h5>
+                            <hr>
+                        </div>
+                        <div class="col-12">
+                            <h5>Altura: {{histoCli.altura}}</h5>
+                        </div>
+                        <div class="col-12">
+                            <h5>Peso: {{histoCli.peso}}</h5>
+                        </div>
+                        <div class="col-12">
+                            <h5>Temperatura: {{histoCli.temperatura}}</h5>
+                        </div>
+                        <div class="col-12">
+                            <h5>Presion: {{histoCli.presion}}</h5>
+                        </div>
+                        <div class="col-12" *ngFor="let dato of histoCli.datos; let i = index">
+                            <h5 class="text-capitalize">{{sacarKey(dato)}}: {{dato[sacarKey(dato)]}}</h5>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
+
     </div>
+
 </main>

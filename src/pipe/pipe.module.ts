@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CalendarComponent } from './calendar.component';
+import { HoraFormatPipe } from './format-time.pipe';
 
 
 
 @NgModule({
   declarations: [
-    CalendarComponent
+    HoraFormatPipe
   ],
   imports: [
     CommonModule
   ],
-  exports: [CalendarComponent]
+  exports: [HoraFormatPipe]
 })
-export class CalendarModule { }
+export class PipeModule { }

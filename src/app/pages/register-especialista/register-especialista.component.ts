@@ -86,6 +86,7 @@ export class RegisterEspecialistaComponent {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       console.log("invalid form");
+      this.captcha = '';
       return;
     }
 

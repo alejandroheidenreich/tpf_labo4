@@ -5,6 +5,7 @@ import { EspecialistaComponent } from './especialista.component';
 const routes: Routes = [
   {
     path: '', component: EspecialistaComponent,
+    data: { animation: '* <=> *' },
     children: [
       {
         path: '', loadChildren: () => import('./home/home.module')
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'mis-horarios', loadChildren: () => import('./mis-horarios/mis-horarios.module')
           .then((mod) => mod.MisHorariosModule),
+      },
+      {
+        path: 'pacientes', loadChildren: () => import('./pacientes/pacientes.module')
+          .then((mod) => mod.PacientesModule),
       },
     ]
   },

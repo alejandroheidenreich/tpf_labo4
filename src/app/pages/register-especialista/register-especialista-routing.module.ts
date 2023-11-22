@@ -4,7 +4,9 @@ import { RegisterEspecialistaComponent } from './register-especialista.component
 
 const routes: Routes = [
   {
-    path: '', component: RegisterEspecialistaComponent
+    path: '', component: RegisterEspecialistaComponent,
+    data: { animation: 'register' }
+
   }
 ];
 

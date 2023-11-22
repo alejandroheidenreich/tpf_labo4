@@ -22,7 +22,7 @@ export class TurnoService {
   updateTurno(turno: Turno): void {
     if (turno === null) return;
     const docs = doc(this.turnRef, turno.id);
-    updateDoc(docs, { estado: turno.estado, reseña: turno.reseña, calificacion: turno.calificacion, encuesta: turno.encuesta });
+    updateDoc(docs, { estado: turno.estado, reseña: turno.reseña, calificacion: turno.calificacion, encuesta: turno.encuesta, historial: turno.historial });
   }
 
   traerTurnos(): Observable<Turno[]> {

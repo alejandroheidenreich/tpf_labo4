@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Paciente } from 'src/app/interfaces/paciente.interface';
 import { Turno } from 'src/app/interfaces/turno.inteface';
 import { AuthService } from 'src/app/services/auth.service';
+import { CurrentUserService } from 'src/app/services/current-user.service';
 import { PacientesService } from 'src/app/services/pacientes.service';
 import { TurnoService } from 'src/app/services/turno.service';
 import Swal from 'sweetalert2';
@@ -9,14 +10,16 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-mis-turnos',
   templateUrl: './mis-turnos.component.html',
-  styleUrls: ['./mis-turnos.component.css']
+  styleUrls: ['./mis-turnos.component.css'],
 })
 export class MisTurnosComponent {
+
   public email!: string;
   public turnos: Turno[] = [];
   public pacientes: Paciente[] = [];
+  public mostrarHistorial: boolean = false;
 
-  constructor(private auth: AuthService, private tur: TurnoService, private pac: PacientesService) { }
+  constructor(private auth: AuthService, private tur: TurnoService, private pac: PacientesService, private cUser: CurrentUserService) { }
 
   ngOnInit(): void {
     this.pac.traer().subscribe(data => this.pacientes = data);
@@ -204,4 +207,26 @@ export class MisTurnosComponent {
       }
     });
   }
+
+  async cargarHistorial(turno: Turno) {
+    this.mostrarHistorial = true;
+    this.cUser.idPacienteHistorial = this.getIdPaciente(turno.pacienteEmail);
+    this.cUser.turno = turno;
+
+  }
+
+  getIdPaciente(pacienteEmail: string): string {
+    for (const pac of this.pacientes) {
+      if (pac.email === pacienteEmail) {
+        return pac.idDoc;
+      }
+    }
+    return '';
+  }
+
+  getHistorial(historial: boolean) {
+    this.mostrarHistorial = historial;
+    this.traerTurnos();
+  }
+
 }

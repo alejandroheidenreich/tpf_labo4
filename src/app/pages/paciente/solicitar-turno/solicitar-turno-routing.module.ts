@@ -4,7 +4,8 @@ import { SolicitarTurnoComponent } from './solicitar-turno.component';
 
 const routes: Routes = [
   {
-    path: '', component: SolicitarTurnoComponent
+    path: '', component: SolicitarTurnoComponent,
+    data: { animation: 'p <=> p' }
   }
 ];
 

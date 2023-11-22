@@ -1,4 +1,4 @@
-import { Dias, Hora, Horario } from "./jornada.interface";
+import { Horario } from "./jornada.interface";
 
 
 export interface Turno {
@@ -12,6 +12,7 @@ export interface Turno {
     reseña: string,
     calificacion: string,
     encuesta: string[],
+    historial: boolean,
 }
 
 export interface DiaAtencion {
@@ -24,6 +25,5 @@ export interface HorarioAtencion {
     horario: Horario;
     especialistaEmail: string,
     disponible: boolean,
-
 }
 

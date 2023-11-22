@@ -8,20 +8,25 @@ import { EspecialistasComponent } from './especialistas/especialistas.component'
 import { PacientesComponent } from './pacientes/pacientes.component';
 import { AdminsComponent } from './admins/admins.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RegisterPacienteComponent } from '../register-paciente/register-paciente.component';
 import { TurnosComponent } from './turnos/turnos.component';
 import { SolicitarTurnoComponent } from './solicitar-turno/solicitar-turno.component';
+import { AltaEspecialidadComponent } from './alta-especialidad/alta-especialidad.component';
+import { PipeModule } from 'src/pipe/pipe.module';
+
+
 
 
 
 @NgModule({
   declarations: [
-    UsuariosComponent, SidebarComponent, EspecialistasComponent, PacientesComponent, AdminsComponent, TurnosComponent, SolicitarTurnoComponent
+    UsuariosComponent, SidebarComponent, EspecialistasComponent, PacientesComponent, AdminsComponent, TurnosComponent, SolicitarTurnoComponent, AltaEspecialidadComponent
   ],
   imports: [
     CommonModule,
     UsuariosRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PipeModule
+
   ]
 })
 export class UsuariosModule { }

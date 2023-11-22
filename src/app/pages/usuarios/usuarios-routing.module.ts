@@ -4,7 +4,8 @@ import { UsuariosComponent } from './usuarios.component';
 
 const routes: Routes = [
   {
-    path: '', component: UsuariosComponent
+    path: '', component: UsuariosComponent,
+    data: { animation: '* <=> *' }
   }
 ];
 

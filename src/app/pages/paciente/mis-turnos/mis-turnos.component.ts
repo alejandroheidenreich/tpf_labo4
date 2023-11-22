@@ -70,7 +70,7 @@ export class MisTurnosComponent implements OnInit {
   async completarEncuesta(turno: Turno) {
 
     const { value: formValues } = await Swal.fire({
-      title: "Multiple inputs",
+      title: "Encuesta del servicio",
       html: `
       <label for="swal-input1">1. ¿Cómo calificarías la amabilidad del personal en tu última visita a nuestra clínica?</label>
 <input id="swal-input1" class="swal2-input">

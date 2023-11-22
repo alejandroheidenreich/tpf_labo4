@@ -4,7 +4,9 @@ import { RegisterPacienteComponent } from './register-paciente.component';
 
 const routes: Routes = [
   {
-    path: '', component: RegisterPacienteComponent
+    path: '', component: RegisterPacienteComponent,
+    data: { animation: 'register' }
+
   }
 ];
 

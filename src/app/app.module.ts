@@ -14,9 +14,10 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { NgxSpinnerModule } from "ngx-spinner";
 
 
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,9 +31,10 @@ import { NgxSpinnerModule } from "ngx-spinner";
     provideStorage(() => getStorage()),
     AngularFireModule.initializeApp(environment.firebase),
     NgxSpinnerModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 export class AppModule { }

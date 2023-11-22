@@ -14,7 +14,9 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "sweetalert2"
+              "sweetalert2",
+              "pdfmake/build/vfs_fonts",
+              "pdfmake/build/pdfmake"
             ],
             "outputPath": "dist/tpf_labo4",
             "index": "src/index.html",

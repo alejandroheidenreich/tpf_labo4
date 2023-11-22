@@ -34,7 +34,10 @@ export class SolicitarTurnoComponent implements OnInit {
   public filtroSelect: string = "";
   public especialidadSelect: string = "";
   public especialistaSelect: Especialista | null = null;
-
+  public especialistasDisponibles: Especialista[] = [];
+  public diaSelect: HorarioAtencion | null = null;
+  public indexDiaSelect: number = 0;
+  public diaNombreSelect: string = '';
 
   constructor(private spinner: NgxSpinnerService, private jor: JornadaService, private tur: TurnoService, private auth: AuthService, private esp: EspecialistaService, private especial: EspecialidadService, private pac: PacientesService) { }
 
@@ -80,8 +83,7 @@ export class SolicitarTurnoComponent implements OnInit {
 
       const dia = this.convertirDiaATexto(fecha.getDay());
       for (const jornada of this.jornadas) {
-        if ((this.filtroSelect === 'especialista' && jornada.email === this.especialistaSelect?.email) ||
-          (this.filtroSelect === 'especialidad' && this.contieneEspecialidad(jornada, this.especialidadSelect))) {
+        if (jornada.email === this.especialistaSelect?.email) {
 
           if (dia !== 'domingo' && jornada.dias[dia].length > 0) {
             for (const horarioJor of jornada.dias[dia]) {
@@ -106,11 +108,18 @@ export class SolicitarTurnoComponent implements OnInit {
   }
 
   reset() {
-    this.filtroSelect = "";
-    this.especialistaSelect = null;
-    this.especialidadSelect = "";
-    this.turnosDisponibles = null;
-    this.pacienteSelect = null;
+    if (this.diaSelect) {
+      this.diaSelect = null;
+    }
+    else if (this.especialistaSelect != null) {
+      this.turnosDisponibles = null;
+      this.especialistaSelect = null;
+    }
+    else if (this.especialidadSelect != '') {
+      this.especialidadSelect = "";
+    } else {
+      this.pacienteSelect = null;
+    }
   }
 
   setFiltro(selector: string): void {
@@ -144,18 +153,13 @@ export class SolicitarTurnoComponent implements OnInit {
 
   setEspecialidad(esp: string): void {
     this.spinner.show();
-
     setTimeout(() => {
       this.especialidadSelect = esp;
       console.log(this.especialidadSelect);
-
-      this.cargarTurnos();
+      this.filtrarEspecialistas(esp);
       this.spinner.hide();
     }, 1000);
-
   }
-
-
 
   contieneEspecialidad(jornada: Jornada, esp: string): boolean {
     for (const especialista of this.especialistas) {
@@ -197,6 +201,7 @@ export class SolicitarTurnoComponent implements OnInit {
       reseña: '',
       calificacion: '',
       encuesta: [],
+      historial: false,
     }
 
     this.tur.agregarTurno(this.turno);
@@ -233,6 +238,28 @@ export class SolicitarTurnoComponent implements OnInit {
     return true;
   }
 
+  getFecha(array: any[], index: number): string {
+    const dato = this.getKeyByIndex(array, index);
+    const fecha = dato.split('/')
+    return fecha[0] + '/' + fecha[1];
+  }
 
+  filtrarEspecialistas(esp: string): void {
+    this.especialistasDisponibles = [];
+    for (const especialista of this.especialistas) {
+      if (especialista.especialidad.includes(esp)) {
+        this.especialistasDisponibles.push(especialista);
+      }
+    }
+  }
+
+  getFechaTurno(select: HorarioAtencion, index: number, dia: string): void {
+    console.log(dia);
+    this.indexDiaSelect = index;
+    this.diaSelect = select;
+    this.diaNombreSelect = dia;
+
+
+  }
 
 }

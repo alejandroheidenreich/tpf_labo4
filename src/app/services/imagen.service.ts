@@ -22,13 +22,29 @@ export class ImagenService {
         });
     });
   }
+
   subirImg(file: any): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       const imgRef = ref(this.storage, `usuarios/${Date.now()}-${file.name}`);
       uploadBytes(imgRef, file)
         .then(res => getDownloadURL(imgRef))
         .then(url => {
-          console.log("Subida", file);
+          //console.log("Subida", file);
+          resolve(url);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  subirImgEspecialidad(file: any): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const imgRef = ref(this.storage, `especialidades/${Date.now()}-${file.name}`);
+      uploadBytes(imgRef, file)
+        .then(res => getDownloadURL(imgRef))
+        .then(url => {
+          //console.log("Subida", file);
           resolve(url);
         })
         .catch(error => {

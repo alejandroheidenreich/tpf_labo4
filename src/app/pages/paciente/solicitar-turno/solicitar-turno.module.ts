@@ -5,6 +5,7 @@ import { SolicitarTurnoRoutingModule } from './solicitar-turno-routing.module';
 import { SolicitarTurnoComponent } from './solicitar-turno.component';
 import { FormsModule } from '@angular/forms';
 
+import { PipeModule } from 'src/pipe/pipe.module';
 
 
 @NgModule({
@@ -15,7 +16,9 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     SolicitarTurnoRoutingModule,
     CalendarModule,
-    FormsModule
+    FormsModule,
+    PipeModule
+
   ]
 })
 export class SolicitarTurnoModule { }

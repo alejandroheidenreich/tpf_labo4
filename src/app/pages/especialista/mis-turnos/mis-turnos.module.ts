@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { MisTurnosRoutingModule } from './mis-turnos-routing.module';
 import { MisTurnosComponent } from './mis-turnos.component';
+import { HistorialModule } from 'src/app/modules/historial/historial.module';
+
 
 
 @NgModule({
@@ -11,7 +13,8 @@ import { MisTurnosComponent } from './mis-turnos.component';
   ],
   imports: [
     CommonModule,
-    MisTurnosRoutingModule
+    MisTurnosRoutingModule,
+    HistorialModule
   ]
 })
 export class MisTurnosModule { }

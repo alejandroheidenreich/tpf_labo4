@@ -5,33 +5,44 @@ import { PacienteComponent } from './paciente.component';
 const routes: Routes = [
   {
     path: '', component: PacienteComponent,
+    data: { animation: 'p <=> p' },
     children: [
       {
         path: '',
         loadChildren: () => import('./home/home.module')
           .then((mod) => mod.HomeModule),
+
+
       },
       {
         path: 'mis-turnos',
         loadChildren: () => import('./mis-turnos/mis-turnos.module')
           .then((mod) => mod.MisTurnosModule),
+
+
       },
       {
         path: 'solicitar-turno',
         loadChildren: () => import('./solicitar-turno/solicitar-turno.module')
           .then((mod) => mod.SolicitarTurnoModule),
+
+
       },
       {
         path: 'mi-perfil',
         loadChildren: () => import('./mi-perfil/mi-perfil.module')
           .then((mod) => mod.MiPerfilModule),
+
+
       },
       {
         path: 'solicitar-turno',
         loadChildren: () => import('./solicitar-turno/solicitar-turno.module')
           .then((mod) => mod.SolicitarTurnoModule),
+
       },
     ]
+
   },
 
 ];
