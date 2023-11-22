@@ -16,6 +16,7 @@ export class MisTurnosComponent {
 
   public email!: string;
   public turnos: Turno[] = [];
+  public turnosMostrar: Turno[] = [];
   public pacientes: Paciente[] = [];
   public mostrarHistorial: boolean = false;
 
@@ -34,6 +35,7 @@ export class MisTurnosComponent {
           this.tur.traerTurnosByEmailEspecialista(this.email)
             .subscribe(turnos => {
               this.turnos = turnos;
+              this.turnosMostrar = turnos;
               console.log(this.turnos);
 
             });
@@ -227,6 +229,28 @@ export class MisTurnosComponent {
   getHistorial(historial: boolean) {
     this.mostrarHistorial = historial;
     this.traerTurnos();
+  }
+
+  contieneSubcadenaIgnoreCase(cadenaPrincipal: string, subcadena: string): boolean {
+    return cadenaPrincipal.toLowerCase().includes(subcadena.toLowerCase());
+  }
+
+  getFiltro(event: any) {
+    const valor = event.target.value;
+
+    if (valor === '') {
+      this.turnosMostrar = this.turnos;
+    } else {
+      this.turnosMostrar = [];
+      for (const turno of this.turnos) {
+        if (this.contieneSubcadenaIgnoreCase(turno.estado, valor) ||
+          this.contieneSubcadenaIgnoreCase(turno.fecha, valor) ||
+          this.contieneSubcadenaIgnoreCase(turno.horario.hora, valor) ||
+          this.contieneSubcadenaIgnoreCase(this.getPaciente(turno.pacienteEmail), valor)) {
+          this.turnosMostrar.push(turno);
+        }
+      }
+    }
   }
 
 }
