@@ -195,6 +195,7 @@ export class MisTurnosComponent implements OnInit {
         if (this.contieneSubcadenaIgnoreCase(turno.estado, valor) ||
           this.contieneSubcadenaIgnoreCase(turno.fecha, valor) ||
           this.contieneSubcadenaIgnoreCase(turno.horario.hora, valor) ||
+          this.contieneSubcadenaIgnoreCase(turno.especialidad, valor) ||
           this.contieneSubcadenaIgnoreCase(this.getEspecialista(turno.especialistaEmail), valor)) {
           this.turnosMostrar.push(turno);
         }

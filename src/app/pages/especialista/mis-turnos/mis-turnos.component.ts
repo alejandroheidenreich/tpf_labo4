@@ -245,6 +245,7 @@ export class MisTurnosComponent {
       for (const turno of this.turnos) {
         if (this.contieneSubcadenaIgnoreCase(turno.estado, valor) ||
           this.contieneSubcadenaIgnoreCase(turno.fecha, valor) ||
+          this.contieneSubcadenaIgnoreCase(turno.especialidad, valor) ||
           this.contieneSubcadenaIgnoreCase(turno.horario.hora, valor) ||
           this.contieneSubcadenaIgnoreCase(this.getPaciente(turno.pacienteEmail), valor)) {
           this.turnosMostrar.push(turno);

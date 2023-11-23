@@ -13,6 +13,7 @@
         <div class="col-md-4 col-xl-4 bg-dark text-light rounded-3 border border-3 border-secondary text-left pt-3"
             *ngFor="let turno of turnosMostrar">
             <h3>Especialista: {{getEspecialista(turno.especialistaEmail)}}</h3>
+            <h4>Especialidad: {{turno.especialidad}}</h4>
             <h4>Fecha: {{turno.fecha}}</h4>
             <h4>Hora: {{turno.horario.hora}}</h4>
             <h4>Nro. Consultorio: {{turno.horario.nroConsultorio}}</h4>
